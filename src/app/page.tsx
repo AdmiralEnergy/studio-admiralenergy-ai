@@ -68,22 +68,67 @@ const Workflow = createIcon(() => (
   </>
 ));
 
-const FIVERR = {
-  basic: process.env.NEXT_PUBLIC_FIVERR_BASIC_URL!,
-  standard: process.env.NEXT_PUBLIC_FIVERR_STANDARD_URL!,
-  premium: process.env.NEXT_PUBLIC_FIVERR_PREMIUM_URL!,
+type TierKey = "basic" | "standard" | "premium";
+
+const FIVERR: Record<TierKey, string> = {
+  basic: process.env.NEXT_PUBLIC_FIVERR_BASIC_URL || "#",
+  standard: process.env.NEXT_PUBLIC_FIVERR_STANDARD_URL || "#",
+  premium: process.env.NEXT_PUBLIC_FIVERR_PREMIUM_URL || "#",
 };
 
-type PricingTier = {
-  id: "basic" | "standard" | "premium";
+const tiers: Array<{
+  key: TierKey;
   name: string;
-  headline: string;
   price: string;
-  description: string;
-  cta: string;
-  features: string[];
-  ribbon?: string;
-};
+  delivery: string;
+  revisions: string;
+  bullets: string[];
+}> = [
+  {
+    key: "basic",
+    name: "Basic",
+    price: "$50",
+    delivery: "3-day delivery",
+    revisions: "1 revision",
+    bullets: [
+      "1 avatar hero image + 3 poses",
+      "Consistent character design",
+      "Fine-tuned model creation",
+      "4 AI images, branded images",
+      "Persona creation + social content",
+    ],
+  },
+  {
+    key: "standard",
+    name: "Standard",
+    price: "$125",
+    delivery: "4-day delivery",
+    revisions: "2 revisions",
+    bullets: [
+      "6 images + outfits, PNGs",
+      "Style guide for reuse",
+      "Consistent character design",
+      "Fine-tuned model creation",
+      "9 AI images, branded images",
+      "Persona creation + social content",
+    ],
+  },
+  {
+    key: "premium",
+    name: "Premium",
+    price: "$250",
+    delivery: "5-day delivery",
+    revisions: "3 revisions",
+    bullets: [
+      "20 images, extensive style guide",
+      "Canva templates + 10 hooks",
+      "Consistent character design",
+      "Fine-tuned model creation",
+      "20 AI images, branded images",
+      "Persona creation + social content",
+    ],
+  },
+];
 
 type GalleryItem = {
   title: string;
@@ -128,52 +173,6 @@ const BENEFITS = [
     title: "Intelligence loop for growth",
     description:
       "Blend paid, owned, and earned signals to guide creative refreshes and prioritize the stories that convert fastest.",
-  },
-];
-
-const PRICING: PricingTier[] = [
-  {
-    id: "basic",
-    name: "Starter Systems",
-    headline: "Foundational brand intelligence with launch kits",
-    price: "$1,500",
-    description: "Perfect for emerging energy founders validating positioning and GTM narrative.",
-    cta: "Launch on Fiverr",
-    features: [
-      "AI persona + visual style guide",
-      "10-script short-form content engine",
-      "3 responsive landing page hero variants",
-      "Analytics dashboard starter template",
-    ],
-  },
-  {
-    id: "standard",
-    name: "Growth Ops",
-    headline: "Full-funnel content automation + Claude orchestration",
-    price: "$3,800",
-    description: "Best for scale-ups needing connected acquisition and lifecycle storytelling.",
-    cta: "Scale with Admiral",
-    features: [
-      "Persona kit + voice of customer library",
-      "Automated newsletter + webinar pipeline",
-      "Paid media creative refresh system",
-      "Acquisition & nurture analytics instrumentation",
-    ],
-    ribbon: "Most popular",
-  },
-  {
-    id: "premium",
-    name: "Enterprise Grid",
-    headline: "Always-on creative studio embedded with your RevOps stack",
-    price: "$7,500",
-    description: "For energy leaders integrating AI across global brand, demand, and partner teams.",
-    cta: "Partner with Admiral",
-    features: [
-      "Dedicated Claude command center",
-      "Multilingual content + localization engine",
-      "Paid + earned media war room support",
-      "RevOps + product marketing telemetry alignment",
-    ],
   },
 ];
 
@@ -255,10 +254,10 @@ const track = (name: string, params: AnalyticsParams = {}) => {
   }
 };
 
-const handleFiverrClick = (tier: "basic" | "standard" | "premium") => {
-  track("select_package", { tier });
-  track("outbound_fiverr_click", { tier });
-  window.open(FIVERR[tier], "_blank", "noopener,noreferrer");
+const onOrder = (key: TierKey) => {
+  track("select_package", { tier: key });
+  track("outbound_fiverr_click", { tier: key });
+  window.open(FIVERR[key], "_blank", "noopener,noreferrer");
 };
 
 export default function Page() {
@@ -298,7 +297,7 @@ export default function Page() {
               </button>
               <button
                 type="button"
-                onClick={() => handleFiverrClick("standard")}
+                onClick={() => onOrder("standard")}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-semibold text-navy/80 transition hover:-translate-y-0.5 hover:border-neon hover:text-navy"
               >
                 Explore packages
@@ -337,7 +336,7 @@ export default function Page() {
               </ul>
               <button
                 type="button"
-                onClick={() => handleFiverrClick((PRICING.find((tier) => tier.ribbon)?.id ?? "standard"))}
+                onClick={() => onOrder("standard")}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
               >
                 View Claude launch kit
@@ -404,38 +403,32 @@ export default function Page() {
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
-            {PRICING.map((tier) => (
+            {tiers.map((tier) => (
               <div
-                key={tier.id}
-                className={`relative flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/20 backdrop-blur ${
-                  tier.ribbon ? "md:-translate-y-4 md:scale-[1.02]" : ""
-                }`}
+                key={tier.key}
+                className="relative flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/20 backdrop-blur"
               >
-                {tier.ribbon ? (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-neon px-4 py-1 text-xs font-semibold text-navy shadow-glow">
-                    {tier.ribbon}
-                  </div>
-                ) : null}
                 <div className="space-y-3">
                   <h3 className="text-xl font-semibold text-cream">{tier.name}</h3>
                   <p className="text-3xl font-semibold text-neon">{tier.price}</p>
-                  <p className="text-sm text-cream/70">{tier.headline}</p>
-                  <p className="text-sm text-cream/60">{tier.description}</p>
+                  <p className="text-sm text-cream/70">{tier.delivery}</p>
+                  <p className="text-sm text-cream/60">{tier.revisions}</p>
                 </div>
                 <ul className="mt-6 space-y-3 text-sm text-cream/70">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
+                  {tier.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-3">
                       <Check className="mt-0.5 h-4 w-4 flex-none text-neon" />
-                      <span>{feature}</span>
+                      <span>{bullet}</span>
                     </li>
                   ))}
                 </ul>
                 <button
                   type="button"
-                  onClick={() => handleFiverrClick(tier.id)}
+                  onClick={() => onOrder(tier.key)}
                   className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-neon px-5 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
+                  aria-label={`Order ${tier.name} on Fiverr`}
                 >
-                  {tier.cta}
+                  Order on Fiverr
                   <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>
@@ -531,7 +524,7 @@ export default function Page() {
               </button>
               <button
                 type="button"
-                onClick={() => handleFiverrClick("premium")}
+                onClick={() => onOrder("premium")}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:border-neon hover:text-neon"
               >
                 Start premium engagement
