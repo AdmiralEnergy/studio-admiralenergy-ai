@@ -1,20 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Menu, ChevronLeft, ChevronRight, Check, Star, Shield, TrendingUp, Zap, Users, Clock, ArrowRight, Sparkles, Image as ImageIcon, MessageCircle } from 'lucide-react';
 
-// Analytics helper with detailed tracking
-const track = (eventName, params = {}) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, params);
-  }
-  if (typeof window !== 'undefined' && window.rdt) {
-    const redditEventMap = {
-      'proposal_form_submit': 'Lead',
-      'select_package': 'AddToCart',
-      'purchase': 'Purchase',
-      'outbound_fiverr_click': 'ViewContent'
+// Extend window interface for analytics
+declare global {
+  interface Window {
+    gtag?: (type: string, action: string, params?: Record<string, unknown>) => void;
+    rdt?: ((eventName: string, params?: Record<string, unknown>) => void) & {
+      track?: (eventName: string, params?: Record<string, unknown>) => void;
     };
-    const redditEvent = redditEventMap[eventName] || 'ViewContent';
-    window.rdt('track', redditEvent, params);
+  }
+}
+
+// Strongly typed analytics helper
+const track = (
+  eventName: string,
+  params: Record<string, unknown> = {}
+) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, params);
+  }
+  if (typeof window !== "undefined" && window.rdt) {
+    // Map your internal events to Reddit's expected names if needed
+    const redditEventMap: Record<string, string> = {
+      proposal_form_submit: "Lead",
+      select_package: "AddToCart",
+      purchase: "Purchase",
+      outbound_fiverr_click: "Click"
+    };
+    const mapped = redditEventMap[eventName] ?? eventName;
+    // Support either `rdt` or `rdt.track`
+    if (typeof window.rdt === "function") window.rdt(mapped, params);
+    if (typeof window.rdt?.track === "function") window.rdt.track(mapped, params);
   }
   console.log('📊 Analytics:', eventName, params);
 };
@@ -277,19 +293,19 @@ function App() {
     track('view_gallery', { image_index: index });
   };
 
-  const closeLightbox = () => setLightboxIndex(null);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
-  const nextLightboxImage = () => {
+  const nextLightboxImage = useCallback(() => {
     setLightboxIndex((lightboxIndex + 1) % filteredImages.length);
-  };
+  }, [lightboxIndex, filteredImages.length]);
 
-  const prevLightboxImage = () => {
+  const prevLightboxImage = useCallback(() => {
     setLightboxIndex((lightboxIndex - 1 + filteredImages.length) % filteredImages.length);
-  };
+  }, [lightboxIndex, filteredImages.length]);
 
   // Keyboard shortcuts for lightbox
   useEffect(() => {
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (lightboxIndex !== null) {
         if (e.key === 'ArrowRight') nextLightboxImage();
         if (e.key === 'ArrowLeft') prevLightboxImage();
@@ -299,7 +315,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [lightboxIndex]);
+  }, [lightboxIndex, nextLightboxImage, prevLightboxImage, closeLightbox]);
 
   return (
     <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] font-sans antialiased">
