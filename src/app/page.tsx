@@ -2,71 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, type ReactNode, type SVGProps } from "react";
-
-const createIcon = (render: () => ReactNode) =>
-  function Icon(props: SVGProps<SVGSVGElement>) {
-    return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        {...props}
-      >
-        {render()}
-      </svg>
-    );
-  };
-
-const ArrowUpRight = createIcon(() => (
-  <>
-    <path d="M7 17L17 7" />
-    <path d="M7 7h10v10" />
-  </>
-));
-
-const Check = createIcon(() => <path d="M5 13l4 4L19 7" />);
-
-const Flame = createIcon(() => (
-  <>
-    <path d="M12 2s4 4 4 8a4 4 0 11-8 0c0-2 2-4 4-8z" />
-    <path d="M12 12a2 2 0 10.001 3.999A2 2 0 0012 12z" />
-  </>
-));
-
-const LineChart = createIcon(() => (
-  <>
-    <path d="M4 18l6-6 4 4 6-10" />
-    <path d="M20 18H4" />
-  </>
-));
-
-const PlayCircle = createIcon(() => (
-  <>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M10 9l5 3-5 3V9z" />
-  </>
-));
-
-const Sparkles = createIcon(() => (
-  <>
-    <path d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5L12 3z" />
-    <path d="M5 16l.75 1.75L8 18.5l-2.25.75L5 21l-.75-1.75L2 18.5l2.25-.75L5 16z" />
-    <path d="M18.5 14l.9 2.1L22 17.5l-2.6.9-.9 2.6-.9-2.6L15 17.5l2.6-.9.9-2.6z" />
-  </>
-));
-
-const Workflow = createIcon(() => (
-  <>
-    <rect x="4" y="4" width="6" height="6" rx="1.5" />
-    <rect x="14" y="4" width="6" height="6" rx="1.5" />
-    <rect x="9" y="14" width="6" height="6" rx="1.5" />
-    <path d="M7 10v2a2 2 0 002 2h6a2 2 0 002-2v-2" />
-  </>
-));
+import { useEffect } from "react";
+import { ArrowUpRight, Check, Sparkles, PlayCircle, Workflow, LineChart } from "lucide-react";
 
 type TierKey = "basic" | "standard" | "premium";
 
