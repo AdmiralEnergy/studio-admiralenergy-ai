@@ -142,9 +142,9 @@ type FaqItem = {
 };
 
 const HERO_STATS = [
-  { label: "AI personas deployed", value: "120+" },
-  { label: "Campaigns automated", value: "340" },
-  { label: "Creative velocity lift", value: "3.4x" },
+  { label: "AI personas created", value: "120+" },
+  { label: "campaigns automated", value: "340" },
+  { label: "faster production", value: "3.4×" },
 ];
 
 const TRUST_LOGOS = [
@@ -278,41 +278,24 @@ export default function Page() {
               Creative tech studio
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              AI-Powered Creative Studio for Energy Brands
+              Build AI personas that talk, move, and sell your brand.
             </h1>
             <p className="text-lg text-navy/70">
-              We combine OpenArt.ai image generation, D-ID avatar creation, CapCut editing, and advanced LLMs (Claude, ChatGPT, Gemini) to deliver professional AI personas that convert.
+              Admiral Studio blends OpenArt.ai, D-ID, CapCut, and leading LLMs (Claude, ChatGPT, Gemini) to turn your energy brand into an always-on content engine — fast, personal, and scalable.
             </p>
 
-            <div className="mt-8 space-y-6">
-              <h3 className="text-xl font-semibold text-navy">From avatar to ad</h3>
-              <ul className="space-y-3 text-base text-navy/80">
-                <li className="flex items-start gap-3">
-                  <Sparkles className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
-                  <span><strong>OpenArt.ai:</strong> Generate consistent character designs and branded visuals</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <PlayCircle className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
-                  <span><strong>D-ID:</strong> Transform static images into speaking AI avatars</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Workflow className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
-                  <span><strong>CapCut:</strong> Professional editing and motion graphics integration</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <LineChart className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
-                  <span><strong>LLMs:</strong> Strategic prompt engineering and content optimization</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-3 mt-8">
-              {HERO_STATS.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-navy/10 bg-white/80 p-4 shadow-sm shadow-navy/5 backdrop-blur">
-                  <p className="text-2xl font-semibold text-navy">{stat.value}</p>
-                  <p className="text-xs uppercase tracking-wide text-navy/60">{stat.label}</p>
-                </div>
-              ))}
+            <div className="flex flex-wrap items-center gap-2 text-sm text-navy/60 mt-6">
+              <span className="flex items-center gap-1">
+                <span className="font-semibold text-navy">120+</span> AI personas created
+              </span>
+              <span className="text-navy/30">•</span>
+              <span className="flex items-center gap-1">
+                <span className="font-semibold text-navy">340</span> campaigns automated
+              </span>
+              <span className="text-navy/30">•</span>
+              <span className="flex items-center gap-1">
+                <span className="font-semibold text-navy">3.4×</span> faster production
+              </span>
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row mt-8">
@@ -334,19 +317,40 @@ export default function Page() {
               </button>
             </div>
           </div>
-          <div className="relative w-full max-w-md self-center overflow-hidden rounded-3xl border border-navy/10 bg-white/70 shadow-xl shadow-navy/20 backdrop-blur">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="/hero-demo.mp4" type="video/mp4" />
-              <div className="flex items-center justify-center h-64 bg-gradient-to-br from-neon/10 via-transparent to-navy/10">
-                <p className="text-navy/70 text-sm">Video coming soon</p>
-              </div>
-            </video>
+          <div className="relative w-full max-w-md self-center overflow-hidden rounded-3xl border border-navy/10 bg-white/70 p-8 shadow-xl shadow-navy/20 backdrop-blur">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-neon/10 via-transparent to-navy/10" />
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold">From Avatar to Ad</h2>
+              <p className="text-sm text-navy/70">
+                See how Admiral Studio brings your brand to life with:
+              </p>
+              <ul className="space-y-4 text-sm text-navy/80">
+                <li className="flex items-start gap-3">
+                  <Sparkles className="mt-0.5 h-4 w-4 text-neon" />
+                  <span>Visuals generated in OpenArt.ai</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <PlayCircle className="mt-0.5 h-4 w-4 text-neon" />
+                  <span>Realistic motion and voice with D-ID</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Workflow className="mt-0.5 h-4 w-4 text-neon" />
+                  <span>Editing and storytelling in CapCut</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <LineChart className="mt-0.5 h-4 w-4 text-neon" />
+                  <span>Smart scripts written by advanced LLMs</span>
+                </li>
+              </ul>
+              <button
+                type="button"
+                onClick={() => onOrder("standard")}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
+              >
+                View Studio Workflow
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
