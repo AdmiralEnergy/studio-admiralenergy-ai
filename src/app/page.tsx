@@ -261,7 +261,7 @@ const onOrder = (key: TierKey) => {
 };
 
 export default function Page() {
-  const [proposalOpen, setProposalOpen] = useState(false);
+
 
   useEffect(() => {
     track("view_home");
@@ -271,125 +271,69 @@ export default function Page() {
     <div className="bg-cream text-navy">
       <header className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-neon/10 via-transparent to-navy/10" />
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 pb-24 pt-20 lg:flex-row lg:items-center lg:px-10">
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-6 pb-24 pt-20 lg:flex-row lg:items-center lg:px-10">
           <div className="max-w-2xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-navy/70 shadow-sm backdrop-blur">
               <Sparkles className="h-4 w-4 text-neon" />
               Admiral Studio for Claude teams
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Launch an AI-native creative studio that keeps your energy brand always-on.
+              AI-Powered Creative Studio for Energy Brands
             </h1>
             <p className="text-lg text-navy/70">
-              We combine Claude prompt engineering, performance design, and growth analytics to ship campaigns, content engines, and enablement kits in record time.
+              Professional AI avatars and branded content that converts. Ready in days, not months.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <button
                 type="button"
-                onClick={() => {
-                  setProposalOpen(true);
-                  track("open_proposal_modal");
-                }}
+                onClick={() => onOrder("standard")}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
               >
-                Request proposal
+                Order on Fiverr
                 <ArrowUpRight className="h-4 w-4" />
               </button>
-              <button
-                type="button"
-                onClick={() => onOrder("standard")}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-semibold text-navy/80 transition hover:-translate-y-0.5 hover:border-neon hover:text-navy"
-              >
-                Explore packages
-                <PlayCircle className="h-4 w-4" />
-              </button>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-3">
-              {HERO_STATS.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-navy/10 bg-white/80 p-4 shadow-sm shadow-navy/5 backdrop-blur">
-                  <p className="text-2xl font-semibold text-navy">{stat.value}</p>
-                  <p className="text-xs uppercase tracking-wide text-navy/60">{stat.label}</p>
-                </div>
-              ))}
             </div>
           </div>
-          <div className="relative w-full max-w-md self-center overflow-hidden rounded-3xl border border-navy/10 bg-white/70 p-8 shadow-xl shadow-navy/20 backdrop-blur">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-neon/10 via-transparent to-navy/10" />
-            <div className="space-y-6">
-              <h2 className="text-xl font-semibold">Claude orchestration in motion</h2>
-              <p className="text-sm text-navy/70">
-                See how Admiral Studio routes prompts to production-ready assets, approvals, and analytics while your team collaborates in real time.
-              </p>
-              <ul className="space-y-4 text-sm text-navy/80">
-                <li className="flex items-start gap-3">
-                  <Flame className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Persona + offer intelligence automatically personalizes scripts and visuals.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Workflow className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Automated QA, approvals, and tagging keep governance rock solid.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <LineChart className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Performance feedback loops feed Claude new learnings daily.</span>
-                </li>
-              </ul>
-              <button
-                type="button"
-                onClick={() => onOrder("standard")}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
-              >
-                View Claude launch kit
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
+          <div className="relative w-full max-w-md self-center overflow-hidden rounded-3xl border border-navy/10 bg-white/70 shadow-xl shadow-navy/20 backdrop-blur">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/hero-demo.mp4" type="video/mp4" />
+              <div className="flex items-center justify-center h-64 bg-gradient-to-br from-neon/10 via-transparent to-navy/10">
+                <p className="text-navy/70 text-sm">Video coming soon</p>
+              </div>
+            </video>
           </div>
         </div>
       </header>
 
-      <section className="section-padding border-y border-navy/5 bg-white/80">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-10 opacity-80">
-          {TRUST_LOGOS.map((logo) => (
-            <div key={logo.name} className="flex h-12 w-36 items-center justify-center">
-              <Image
-                src={logo.logo}
-                alt={logo.name}
-                width={140}
-                height={48}
-                className="h-10 w-auto object-contain"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-semibold">Bring Claude into every go-to-market ritual</h2>
-              <p className="text-base text-navy/70">
-                Admiral Studio fuses human creativity with generative AI to orchestrate a brand system that learns from every campaign, customer conversation, and sales touchpoint.
-              </p>
-              <Link
-                href="#pricing"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-navy underline-offset-4 hover:text-neon hover:underline"
-                onClick={() => track("jump_to_pricing")}
-              >
-                Compare pricing tiers
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {BENEFITS.map((benefit) => (
-                <div key={benefit.title} className="rounded-3xl border border-navy/10 bg-white p-6 shadow-sm shadow-navy/5">
-                  <benefit.icon className="h-6 w-6 text-neon" />
-                  <h3 className="mt-4 text-lg font-semibold">{benefit.title}</h3>
-                  <p className="mt-2 text-sm text-navy/70">{benefit.description}</p>
+      <section className="section-padding bg-white/80">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-semibold mb-8">See Our AI Avatars in Action</h2>
+          <div className="relative overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-xl shadow-navy/20 backdrop-blur mx-auto max-w-lg">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full aspect-square object-cover"
+            >
+              <source src="/showcase-demo.mp4" type="video/mp4" />
+              <div className="flex items-center justify-center aspect-square bg-gradient-to-br from-neon/10 via-transparent to-navy/10">
+                <div className="text-center space-y-4">
+                  <PlayCircle className="h-12 w-12 text-neon mx-auto" />
+                  <p className="text-navy/70 text-sm">1080x1080 Showcase Video Coming Soon</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            </video>
           </div>
+          <p className="mt-6 text-navy/70 max-w-2xl mx-auto">
+            Professional AI avatars that match your brand identity and speak directly to your energy sector audience.
+          </p>
         </div>
       </section>
 
@@ -437,64 +381,30 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="section-padding">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-navy/50">Gallery</p>
-              <h2 className="mt-2 text-3xl font-semibold">Snapshots from recent Claude studios</h2>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setProposalOpen(true);
-                track("open_proposal_modal", { source: "gallery" });
-              }}
-              className="inline-flex items-center gap-2 rounded-full border border-navy/20 bg-white px-5 py-2 text-sm font-semibold text-navy/80 transition hover:-translate-y-0.5 hover:border-neon hover:text-navy"
-            >
-              Request walkthrough
-              <ArrowUpRight className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {GALLERY.map((item) => (
-              <div key={item.title} className="group relative overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-sm shadow-navy/5">
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={item.asset}
-                    alt={item.title}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <div className="space-y-2 p-6">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-navy/70">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="section-padding bg-white/80">
-        <div className="mx-auto max-w-4xl">
-          <p className="text-center text-sm uppercase tracking-[0.3em] text-navy/50">FAQ</p>
-          <h2 className="mt-3 text-center text-3xl font-semibold">Answers before we start building</h2>
-          <div className="mt-10 space-y-6">
-            {FAQS.map((faq) => (
-              <details key={faq.question} className="group rounded-3xl border border-navy/10 bg-white p-6 shadow-sm shadow-navy/5">
-                <summary className="cursor-pointer list-none text-lg font-semibold text-navy">
-                  <div className="flex items-center justify-between gap-4">
-                    <span>{faq.question}</span>
-                    <ArrowUpRight className="h-5 w-5 transition group-open:rotate-45" />
-                  </div>
-                </summary>
-                <p className="mt-4 text-sm text-navy/70">{faq.answer}</p>
-              </details>
-            ))}
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-semibold mb-12">What Our Clients Say</h2>
+          <div className="relative overflow-hidden rounded-3xl border border-navy/10 bg-white p-8 shadow-xl shadow-navy/20">
+            <div className="space-y-6">
+              <div className="flex justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="h-5 w-5 text-neon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <blockquote className="text-lg text-navy/80 italic">
+                "Testimonials from Fiverr reviews will appear here once we have them. Professional AI avatar creation that delivers results."
+              </blockquote>
+              <div className="text-sm text-navy/60">
+                <p className="font-semibold">Fiverr Client Review</p>
+                <p>Energy Sector Professional</p>
+              </div>
+            </div>
           </div>
+          <p className="mt-6 text-sm text-navy/50">
+            Testimonial carousel will be updated with real Fiverr reviews
+          </p>
         </div>
       </section>
 
@@ -513,13 +423,10 @@ export default function Page() {
             <div className="flex flex-col gap-4">
               <button
                 type="button"
-                onClick={() => {
-                  setProposalOpen(true);
-                  track("open_proposal_modal", { source: "cta" });
-                }}
+                onClick={() => onOrder("standard")}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
               >
-                Request proposal
+                Order on Fiverr
                 <ArrowUpRight className="h-4 w-4" />
               </button>
               <button
@@ -535,6 +442,23 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="py-8 bg-neon">
+        <div className="mx-auto max-w-6xl px-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-navy">
+            <p className="font-semibold">Get Started Today</p>
+            <p className="text-sm text-navy/70">Professional AI avatars delivered in 3-5 days</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onOrder("basic")}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
+          >
+            Start with Basic Package
+            <ArrowUpRight className="h-4 w-4" />
+          </button>
+        </div>
+      </section>
+
       <footer className="border-t border-navy/5 bg-cream py-10 text-center text-sm text-navy/60">
         <p>© {new Date().getFullYear()} Admiral Studio. Purpose-built for energy innovators.</p>
         <div className="mt-2 space-x-4">
@@ -547,7 +471,7 @@ export default function Page() {
         </div>
       </footer>
 
-      {proposalOpen ? (
+{/* Removed proposal modal for simplicity
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/60 backdrop-blur">
           <div className="relative w-full max-w-lg rounded-[32px] border border-navy/10 bg-white p-8 shadow-2xl">
             <button
@@ -594,7 +518,7 @@ export default function Page() {
             </form>
           </div>
         </div>
-      ) : null}
+*/}
     </div>
   );
 }
