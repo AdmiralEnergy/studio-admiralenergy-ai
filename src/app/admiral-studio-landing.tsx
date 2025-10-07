@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Menu, ChevronLeft, ChevronRight, Check, Star, Shield, TrendingUp, Zap, Users, Clock, ArrowRight, Sparkles, Image as ImageIcon, MessageCircle } from 'lucide-react';
 
+// Form data interfaces
+interface FormData {
+  name: string;
+  email: string;
+  use_case: string;
+  timeline: string;
+  message: string;
+}
+
 // Extend window interface for analytics
 declare global {
   interface Window {
@@ -151,11 +160,11 @@ const testimonials = [
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [showScrollCTA, setShowScrollCTA] = useState(false);
   const [galleryFilter, setGalleryFilter] = useState('all');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     use_case: '',
@@ -163,9 +172,9 @@ function App() {
     message: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
-  const [isVisible, setIsVisible] = useState({});
-  const heroRef = useRef(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
+  const heroRef = useRef<HTMLDivElement>(null);
 
   // Scroll tracking for animations and sticky CTA
   useEffect(() => {
@@ -200,7 +209,7 @@ function App() {
   }, []);
 
   // Smooth scroll with offset for sticky header
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
@@ -218,7 +227,7 @@ function App() {
   };
 
   // Handle Fiverr click with analytics
-  const handleFiverrClick = (tier) => {
+  const handleFiverrClick = (tier: string) => {
     track('outbound_fiverr_click', { tier, price: pricingTiers.find(t => t.tier === tier)?.price });
     track('select_package', { tier });
     window.open(`https://fiverr.com/admiral-ai-studio-${tier}`, '_blank');
@@ -232,7 +241,7 @@ function App() {
 
   // Form validation
   const validateForm = () => {
-    const errors = {};
+    const errors: Record<string, string> = {};
     if (!formData.name.trim()) errors.name = 'Name is required';
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
@@ -248,18 +257,18 @@ function App() {
   };
 
   // Handle form input with live validation
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: FormData) => ({ ...prev, [name]: value }));
     
     // Clear error for this field
     if (formErrors[name]) {
-      setFormErrors(prev => ({ ...prev, [name]: '' }));
+      setFormErrors((prev: Record<string, string>) => ({ ...prev, [name]: '' }));
     }
   };
 
   // Handle form submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: any) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -288,7 +297,7 @@ function App() {
     : galleryImages.filter(img => img.category === galleryFilter);
 
   // Lightbox handlers
-  const openLightbox = (index) => {
+  const openLightbox = (index: number) => {
     setLightboxIndex(index);
     track('view_gallery', { image_index: index });
   };
