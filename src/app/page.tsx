@@ -270,7 +270,8 @@ export default function Page() {
   return (
     <div className="bg-cream text-navy">
       <header className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-neon/10 via-transparent to-navy/10" />
+        <div className="hero-bg absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-br from-cream/90 via-cream/80 to-cream/90 backdrop-blur-sm" />
         <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-6 pb-24 pt-20 lg:flex-row lg:items-center lg:px-10">
           <div className="max-w-2xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-navy/70 shadow-sm backdrop-blur">
