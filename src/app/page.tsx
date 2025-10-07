@@ -158,38 +158,38 @@ const TRUST_LOGOS = [
 const BENEFITS = [
   {
     icon: Sparkles,
-    title: "Claude-guided creative ops",
+    title: "AI-powered creative workflow",
     description:
-      "Spin up on-brand concepts, scripts, and visuals in minutes with Claude playbooks grounded in your voice and compliance rules.",
+      "Generate consistent avatars and branded visuals using our integrated OpenArt + D-ID + CapCut pipeline.",
   },
   {
     icon: Workflow,
-    title: "Automated content supply chain",
+    title: "Professional video production",
     description:
-      "Map prompts to asset templates, approvals, and routing so teams can launch omnichannel campaigns without bottlenecks.",
+      "Transform static designs into speaking AI personas with motion graphics and seamless editing workflows.",
   },
   {
     icon: LineChart,
-    title: "Intelligence loop for growth",
+    title: "Strategic LLM optimization",
     description:
-      "Blend paid, owned, and earned signals to guide creative refreshes and prioritize the stories that convert fastest.",
+      "Multi-model prompting (Claude, GPT, Gemini) ensures your content hits the right tone and converts audiences.",
   },
 ];
 
 const GALLERY: GalleryItem[] = [
   {
-    title: "Launch accelerator dashboard",
-    description: "Command AI personas, asset requests, and brand approvals from one Claude prompt.",
+    title: "AI Avatar Production Pipeline",
+    description: "See our OpenArt + D-ID + CapCut workflow in action—from concept to speaking persona.",
     asset: "/gallery/dashboard.svg",
   },
   {
-    title: "Adaptive campaign storyboard",
-    description: "Tie creative concepts to media plans, KPIs, and localized variants automatically.",
+    title: "Multi-Platform Content Suite",
+    description: "Professional video assets optimized for social, ads, and presentations—all AI-generated.",
     asset: "/gallery/storyboard.svg",
   },
   {
-    title: "Founder's narrative kit",
-    description: "Translate complex energy tech into investor-ready visuals and messaging.",
+    title: "Energy Brand Showcase",
+    description: "Industry-specific avatars and messaging that resonates with energy sector audiences.",
     asset: "/gallery/narrative.svg",
   },
 ];
@@ -198,22 +198,22 @@ const FAQS: FaqItem[] = [
   {
     question: "How fast can we launch after kickoff?",
     answer:
-      "We complete discovery, Claude fine-tuning, and your initial creative sprint within seven business days so you have assets in market immediately.",
+      "We deliver your AI avatar package with all assets within 3-5 business days, including character design, video creation, and branded templates.",
   },
   {
-    question: "Do we need to manage Claude prompts ourselves?",
+    question: "What's included in the production workflow?",
     answer:
-      "No. We configure reusable prompt chains, governance, and brand guardrails. Your team interacts through guided workflows and dashboards.",
+      "Every package includes OpenArt.ai character generation, D-ID avatar creation, CapCut editing, and strategic prompt engineering using multiple LLMs.",
   },
   {
-    question: "What does collaboration look like?",
+    question: "Can you match our existing brand guidelines?",
     answer:
-      "You get a dedicated strategist, creative lead, and automation engineer. We run weekly standups, async reviews, and real-time Claude co-creation sessions.",
+      "Absolutely. We analyze your brand assets and ensure consistent visual identity across all AI-generated content and avatar designs.",
   },
   {
-    question: "Can we plug Admiral Studio into our RevOps stack?",
+    question: "Do you offer revisions and iterations?",
     answer:
-      "Yes. We integrate with HubSpot, Salesforce, Marketo, Demandbase, and custom data lakes to keep analytics + automation in sync.",
+      "Yes. Each package includes multiple revision rounds, and we work closely with you to perfect the final deliverables before handoff.",
   },
 ];
 
@@ -275,22 +275,62 @@ export default function Page() {
           <div className="max-w-2xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-navy/70 shadow-sm backdrop-blur">
               <Sparkles className="h-4 w-4 text-neon" />
-              Admiral Studio for Claude teams
+              Creative tech studio
             </span>
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               AI-Powered Creative Studio for Energy Brands
             </h1>
             <p className="text-lg text-navy/70">
-              Professional AI avatars and branded content that converts. Ready in days, not months.
+              We combine OpenArt.ai image generation, D-ID avatar creation, CapCut editing, and advanced LLMs (Claude, ChatGPT, Gemini) to deliver professional AI personas that convert.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row">
+
+            <div className="mt-8 space-y-6">
+              <h3 className="text-xl font-semibold text-navy">From avatar to ad</h3>
+              <ul className="space-y-3 text-base text-navy/80">
+                <li className="flex items-start gap-3">
+                  <Sparkles className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
+                  <span><strong>OpenArt.ai:</strong> Generate consistent character designs and branded visuals</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <PlayCircle className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
+                  <span><strong>D-ID:</strong> Transform static images into speaking AI avatars</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Workflow className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
+                  <span><strong>CapCut:</strong> Professional editing and motion graphics integration</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <LineChart className="mt-1 h-5 w-5 text-neon flex-shrink-0" />
+                  <span><strong>LLMs:</strong> Strategic prompt engineering and content optimization</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-3 mt-8">
+              {HERO_STATS.map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-navy/10 bg-white/80 p-4 shadow-sm shadow-navy/5 backdrop-blur">
+                  <p className="text-2xl font-semibold text-navy">{stat.value}</p>
+                  <p className="text-xs uppercase tracking-wide text-navy/60">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-4 sm:flex-row mt-8">
+              <button
+                type="button"
+                onClick={() => onOrder("premium")}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
+              >
+                Request Proposal
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
               <button
                 type="button"
                 onClick={() => onOrder("standard")}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-semibold text-navy/80 transition hover:-translate-y-0.5 hover:border-neon hover:text-navy"
               >
-                Order on Fiverr
-                <ArrowUpRight className="h-4 w-4" />
+                Explore Packages
+                <PlayCircle className="h-4 w-4" />
               </button>
             </div>
           </div>
