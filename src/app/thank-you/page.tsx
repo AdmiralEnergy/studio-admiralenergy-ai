@@ -33,26 +33,44 @@ const track = (
 };
 
 export default function ThankYouPage() {
-  const [orderSku, setOrderSku] = useState<string>('');
+  const [orderPackage, setOrderPackage] = useState<string>('');
   const [customerEmail, setCustomerEmail] = useState<string>('');
 
   useEffect(() => {
     // Extract URL params for tracking
     const urlParams = new URLSearchParams(window.location.search);
-    const sku = urlParams.get('sku') || 'medspa_24hr';
+    const pkg = urlParams.get('package') || 'poc_video';  // poc_video or poc_plus
     const email = urlParams.get('email') || '';
     
-    setOrderSku(sku);
+    setOrderPackage(pkg);
     setCustomerEmail(email);
     
     // Track successful conversion
     track('order_confirmed', {
-      package: sku,
+      package: pkg,
       email: email,
-      value: 249, // Base price
+      value: pkg === 'poc_plus' ? 148 : 49,
       currency: 'USD'
     });
   }, []);
+
+  // Package details for display
+  const packageDetails = {
+    poc_video: {
+      title: "Clinic Introduction Video",
+      price: 49,
+      description: "Video-only ($49)",
+      includes: ["45–60s AI-hosted video", "Professional script delivery", "MP4 download link"]
+    },
+    poc_plus: {
+      title: "Video + Branded Visuals",
+      price: 148,
+      description: "Video + 20 Visuals ($148)",
+      includes: ["45–60s AI-hosted video", "20 branded social media graphics", "Ready-to-post formats"]
+    }
+  };
+
+  const currentPackage = packageDetails[orderPackage as keyof typeof packageDetails] || packageDetails.poc_video;
 
   const nextSteps = [
     {
@@ -101,7 +119,7 @@ export default function ThankYouPage() {
           </h1>
           
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Thank you for choosing Admiral Energy Studios. Your Medspa Content Accelerator 
+            Thank you for choosing Admiral Energy Studios. Your <strong>{currentPackage.description}</strong> 
             is now in production and will be delivered within 24 hours.
           </p>
         </div>
@@ -113,21 +131,21 @@ export default function ThankYouPage() {
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-slate-600">Package</span>
-              <span className="font-medium text-slate-900">Medspa Content Accelerator — 24-Hour Kit</span>
+              <span className="font-medium text-slate-900">{currentPackage.title}</span>
             </div>
             
             <div className="flex justify-between items-center">
               <span className="text-slate-600">Includes</span>
               <div className="text-right">
-                <div className="text-sm text-slate-900">45–60s AI Video</div>
-                <div className="text-sm text-slate-900">20 Branded Visuals</div>
-                <div className="text-sm text-slate-900">Caption Pack + 1 Revision</div>
+                {currentPackage.includes.map((item, idx) => (
+                  <div key={idx} className="text-sm text-slate-900">{item}</div>
+                ))}
               </div>
             </div>
             
             <div className="border-t pt-3 flex justify-between items-center">
               <span className="font-medium text-slate-900">Total</span>
-              <span className="text-xl font-bold text-slate-900">$249</span>
+              <span className="text-xl font-bold text-slate-900">${currentPackage.price}</span>
             </div>
           </div>
         </div>
