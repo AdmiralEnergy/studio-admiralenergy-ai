@@ -4,6 +4,16 @@ import { useState } from 'react';
 import { Upload, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+// Extend window interface for analytics
+declare global {
+  interface Window {
+    gtag?: (type: string, action: string, params?: Record<string, unknown>) => void;
+    rdt?: ((eventName: string, params?: Record<string, unknown>) => void) & {
+      track?: (eventName: string, params?: Record<string, unknown>) => void;
+    };
+  }
+}
+
 interface FormData {
   name: string;
   email: string;
@@ -37,11 +47,45 @@ export default function OrderPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission (replace with actual Netlify form handling)
-    setTimeout(() => {
-      setSubmitted(true);
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    // Add UTM parameters if available
+    const urlParams = new URLSearchParams(window.location.search);
+    formData.append('utm_source', urlParams.get('utm_source') || 'direct');
+    formData.append('utm_medium', urlParams.get('utm_medium') || 'website');
+    formData.append('utm_campaign', urlParams.get('utm_campaign') || 'medspa_accelerator');
+    formData.append('utm_content', urlParams.get('utm_content') || 'order_form');
+    formData.append('package', 'medspa_24hr');
+
+    try {
+      const res = await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString(),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        setIsSubmitting(false);
+        
+        // Fire analytics events
+        if (typeof window !== 'undefined') {
+          if (window.gtag) {
+            window.gtag("event", "generate_lead", { method: "netlify_form", value: 249 });
+          }
+          if ((window as any).rdt) {
+            (window as any).rdt("track", "Lead");
+          }
+        }
+      } else {
+        setIsSubmitting(false);
+        alert('There was an error submitting your order. Please try again.');
+      }
+    } catch (error) {
       setIsSubmitting(false);
-    }, 2000);
+      alert('There was an error submitting your order. Please try again.');
+    }
   };
 
   if (submitted) {
@@ -92,7 +136,6 @@ export default function OrderPage() {
         <form 
           onSubmit={handleSubmit}
           className="bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-8 space-y-6"
-          data-netlify="true"
           name="medspa-order"
         >
           <input type="hidden" name="form-name" value="medspa-order" />
