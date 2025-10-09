@@ -4,9 +4,11 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Admiral Studio | AI-Native Creative Systems for Energy Brands",
-  description:
-    "Launch adaptive creative systems, automated content ops, and intelligent analytics with Admiral Studio's AI-native team for energy innovators.",
+  title: "Admiral Energy Studios",
+  description: "AI-powered content creation for Medspas",
+  icons: {
+    icon: "/logos/ae_studios_logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logos/ae_studios_logo.png" />
+      </head>
       <body className="bg-cream text-navy">
         {children}
         <Script id="ga4" strategy="afterInteractive">
