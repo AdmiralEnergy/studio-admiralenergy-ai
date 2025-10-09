@@ -36,7 +36,6 @@ export default function OrderPage() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -66,10 +65,7 @@ export default function OrderPage() {
       });
 
       if (res.ok) {
-        setSubmitted(true);
-        setIsSubmitting(false);
-        
-        // Fire analytics events
+        // Fire analytics events for form submission
         if (typeof window !== 'undefined') {
           if (window.gtag) {
             window.gtag("event", "generate_lead", { method: "netlify_form", value: 249 });
@@ -78,6 +74,23 @@ export default function OrderPage() {
             (window as any).rdt("track", "Lead");
           }
         }
+        
+        // Build thank-you page URL with parameters for personalization
+        const thankYouUrl = new URLSearchParams();
+        thankYouUrl.set('sku', 'medspa_24hr');
+        thankYouUrl.set('email', formData.get('email') as string);
+        
+        // Preserve UTM parameters
+        const utmSource = urlParams.get('utm_source');
+        const utmMedium = urlParams.get('utm_medium');
+        const utmCampaign = urlParams.get('utm_campaign');
+        
+        if (utmSource) thankYouUrl.set('utm_source', utmSource);
+        if (utmMedium) thankYouUrl.set('utm_medium', utmMedium);
+        if (utmCampaign) thankYouUrl.set('utm_campaign', utmCampaign);
+        
+        // Redirect to thank-you page
+        window.location.href = `/thank-you?${thankYouUrl.toString()}`;
       } else {
         setIsSubmitting(false);
         alert('There was an error submitting your order. Please try again.');
@@ -88,30 +101,7 @@ export default function OrderPage() {
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <div className="w-16 h-16 bg-[#39FF14] rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-[#0c2f4a]" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold mb-4">Order Received!</h1>
-          <p className="text-[#f7f5f2]/80 mb-6">
-            We'll review your details and start creating your 24-hour content kit. 
-            Expect your first draft within 24 hours.
-          </p>
-          <Link 
-            href="/medspa"
-            className="inline-block bg-[#39FF14] text-[#0c2f4a] px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-all"
-          >
-            Back to Medspa Page
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Form submission now redirects to thank-you page, so no inline success state needed
 
   return (
     <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] py-12">
