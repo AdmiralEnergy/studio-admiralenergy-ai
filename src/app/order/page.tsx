@@ -1,10 +1,12 @@
+// src/app/order/page.tsx
 "use client";
 
-import { useState } from 'react';
-import { Upload, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+import { useState, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { ArrowLeft, Upload } from "lucide-react";
+import Link from "next/link";
 
-// Extend window interface for analytics
+// Analytics interface
 declare global {
   interface Window {
     gtag?: (type: string, action: string, params?: Record<string, unknown>) => void;
@@ -14,103 +16,70 @@ declare global {
   }
 }
 
-interface FormData {
-  name: string;
-  email: string;
-  website: string;
-  primaryService: string;
-  brandColors: string;
-  voiceTone: string;
-  offerLine: string;
-}
-
-interface OrderPageProps {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function OrderPage({ searchParams }: OrderPageProps) {
-  // Derive package from URL parameters
-  const addVisuals = searchParams?.add_visuals === "1";
+function OrderForm() {
+  const router = useRouter();
+  const sp = useSearchParams();
+  const addVisuals = sp?.get("add_visuals") === "1";
   const inferredPackage = addVisuals ? "poc_plus" : "poc_video";
-  const totalPrice = addVisuals ? 148 : 49;
-  
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    website: '',
-    primaryService: '',
-    brandColors: '',
-    voiceTone: '',
-    offerLine: ''
-  });
+  const price = addVisuals ? 148 : 49; // $49 base, +$99 visuals
+  const [submitting, setSubmitting] = useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSubmitting(true);
+    setSubmitting(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // Ensure Netlify Forms fields are set
+    data.set("form-name", "order");
+    data.set("package", inferredPackage);
     
-    const form = e.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
+    // Add UTM parameters if available
+    const utmSource = sp?.get("utm_source") || "direct";
+    const utmMedium = sp?.get("utm_medium") || "website";
+    const utmCampaign = sp?.get("utm_campaign") || "medspa_poc";
+    const utmContent = sp?.get("utm_content") || "order_form";
     
-    // Add UTM parameters and package info
-    const urlParams = new URLSearchParams(window.location.search);
-    formData.append('utm_source', urlParams.get('utm_source') || 'direct');
-    formData.append('utm_medium', urlParams.get('utm_medium') || 'website');
-    formData.append('utm_campaign', urlParams.get('utm_campaign') || 'medspa_poc');
-    formData.append('utm_content', urlParams.get('utm_content') || 'order_form');
-    formData.append('package', inferredPackage);
+    data.set("utm_source", utmSource);
+    data.set("utm_medium", utmMedium);
+    data.set("utm_campaign", utmCampaign);
+    data.set("utm_content", utmContent);
 
     try {
       const res = await fetch("/__forms.html", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        body: new URLSearchParams(data as any).toString(),
       });
-
+      
       if (res.ok) {
-        // Fire analytics events for form submission
-        if (typeof window !== 'undefined') {
+        // Analytics
+        if (typeof window !== "undefined") {
           if (window.gtag) {
-            window.gtag("event", "generate_lead", { method: "netlify_form", value: 249 });
+            window.gtag("event", "generate_lead", { 
+              method: "netlify_form", 
+              package: inferredPackage,
+              value: price 
+            });
           }
-          if ((window as any).rdt) {
-            (window as any).rdt("track", "Lead");
+          if (window.rdt) {
+            if (typeof window.rdt === "function") window.rdt("Lead");
+            if (window.rdt.track) window.rdt.track("Lead");
           }
         }
-        
-        // Build thank-you page URL with parameters for personalization
-        const thankYouUrl = new URLSearchParams();
-        thankYouUrl.set('package', inferredPackage);
-        thankYouUrl.set('email', formData.get('email') as string);
-        
-        // Preserve UTM parameters
-        const utmSource = urlParams.get('utm_source');
-        const utmMedium = urlParams.get('utm_medium');
-        const utmCampaign = urlParams.get('utm_campaign');
-        
-        if (utmSource) thankYouUrl.set('utm_source', utmSource);
-        if (utmMedium) thankYouUrl.set('utm_medium', utmMedium);
-        if (utmCampaign) thankYouUrl.set('utm_campaign', utmCampaign);
-        
-        // Redirect to thank-you page
-        window.location.href = `/thank-you?${thankYouUrl.toString()}`;
-      } else {
-        setIsSubmitting(false);
-        alert('There was an error submitting your order. Please try again.');
-      }
-    } catch (error) {
-      setIsSubmitting(false);
-      alert('There was an error submitting your order. Please try again.');
-    }
-  };
 
-  // Form submission now redirects to thank-you page, so no inline success state needed
+        // Redirect to thank-you page with package info
+        router.push(`/thank-you?package=${inferredPackage}&email=${data.get("email")}`);
+      } else {
+        setSubmitting(false);
+        alert("There was a problem submitting the form. Please try again.");
+      }
+    } catch {
+      setSubmitting(false);
+      alert("Network error. Please try again.");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] py-12">
@@ -131,13 +100,12 @@ export default function OrderPage({ searchParams }: OrderPageProps) {
           </p>
         </div>
 
-        {/* Form */}
         {/* Package Summary */}
         <div className="mb-8 bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-6">
           <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
           <div className="flex justify-between items-center">
             <span>{addVisuals ? "Clinic Video + Branded Visuals" : "Clinic Introduction Video"}</span>
-            <span className="text-2xl font-bold text-[#39FF14]">${totalPrice}</span>
+            <span className="text-2xl font-bold text-[#39FF14]">${price}</span>
           </div>
           {addVisuals && (
             <div className="text-sm text-[#f7f5f2]/70 mt-2">
@@ -146,14 +114,16 @@ export default function OrderPage({ searchParams }: OrderPageProps) {
           )}
         </div>
 
+        {/* Order Form */}
         <form 
+          name="order" 
           onSubmit={handleSubmit}
           className="bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-8 space-y-6"
-          name="order"
         >
+          {/* Netlify Forms detector fields */}
           <input type="hidden" name="form-name" value="order" />
           <input type="hidden" name="package" value={inferredPackage} />
-          
+
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -165,10 +135,8 @@ export default function OrderPage({ searchParams }: OrderPageProps) {
                 id="name"
                 name="name"
                 required
-                value={formData.name}
-                onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-                placeholder="John Doe"
+                placeholder="Dr. Sarah Johnson"
               />
             </div>
             
@@ -181,145 +149,111 @@ export default function OrderPage({ searchParams }: OrderPageProps) {
                 id="email"
                 name="email"
                 required
-                value={formData.email}
-                onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-                placeholder="john@example.com"
+                placeholder="sarah@yourspa.com"
               />
             </div>
           </div>
 
-          {/* Website */}
+          {/* Clinic Info */}
           <div>
-            <label htmlFor="website" className="block text-sm font-medium mb-2">
-              Website or Instagram Handle *
+            <label htmlFor="clinic" className="block text-sm font-medium mb-2">
+              Clinic/Business Name *
             </label>
             <input
               type="text"
-              id="website"
-              name="website"
+              id="clinic"
+              name="clinic"
               required
-              value={formData.website}
-              onChange={handleInputChange}
               className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-              placeholder="@yourspa or https://yourspa.com"
+              placeholder="Radiant Beauty Med Spa"
             />
           </div>
 
-          {/* Primary Service */}
+          {/* Logo URL (instead of file upload for Netlify Forms compatibility) */}
           <div>
-            <label htmlFor="primaryService" className="block text-sm font-medium mb-2">
-              Primary Service *
-            </label>
-            <select
-              id="primaryService"
-              name="primaryService"
-              required
-              value={formData.primaryService}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-            >
-              <option value="">Select primary service</option>
-              <option value="botox">Botox & Injectables</option>
-              <option value="fillers">Dermal Fillers</option>
-              <option value="skincare">Medical Skincare</option>
-              <option value="laser">Laser Treatments</option>
-              <option value="coolsculpting">CoolSculpting</option>
-              <option value="facials">Medical Facials</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          {/* Brand Colors */}
-          <div>
-            <label htmlFor="brandColors" className="block text-sm font-medium mb-2">
-              Brand Colors (Hex Codes)
+            <label htmlFor="logoUrl" className="block text-sm font-medium mb-2">
+              Logo URL (optional)
             </label>
             <input
-              type="text"
-              id="brandColors"
-              name="brandColors"
-              value={formData.brandColors}
-              onChange={handleInputChange}
+              type="url"
+              id="logoUrl"
+              name="logoUrl"
               className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-              placeholder="#FF6B6B, #4ECDC4 (optional)"
+              placeholder="https://yourspa.com/logo.png"
             />
             <p className="text-xs text-[#f7f5f2]/60 mt-1">
-              Leave blank to use our professional palette
+              Link to your logo file (PNG/JPG). We'll email you for file upload if needed.
             </p>
           </div>
 
-          {/* Voice Tone */}
+          {/* Key Message */}
           <div>
-            <label htmlFor="voiceTone" className="block text-sm font-medium mb-2">
-              Voice & Tone *
+            <label htmlFor="tagline" className="block text-sm font-medium mb-2">
+              Key Message for Video *
             </label>
-            <select
-              id="voiceTone"
-              name="voiceTone"
+            <textarea
+              id="tagline"
+              name="tagline"
               required
-              value={formData.voiceTone}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-            >
-              <option value="">Select your brand voice</option>
-              <option value="professional">Professional & Medical</option>
-              <option value="friendly">Friendly & Approachable</option>
-              <option value="luxury">Luxury & Premium</option>
-              <option value="conversational">Conversational & Relatable</option>
-              <option value="confident">Confident & Bold</option>
-            </select>
-          </div>
-
-          {/* One-line Offer */}
-          <div>
-            <label htmlFor="offerLine" className="block text-sm font-medium mb-2">
-              Your Key Offer (One Line) *
-            </label>
-            <input
-              type="text"
-              id="offerLine"
-              name="offerLine"
-              required
-              value={formData.offerLine}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-              placeholder="e.g., 'New patient Botox special - $50 off first treatment'"
+              rows={3}
+              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors resize-none"
+              placeholder="Welcome to Radiant Beauty Med Spa, where we help you look and feel your best with our advanced treatments and personalized care."
             />
           </div>
 
-          {/* Logo Upload Placeholder */}
+          {/* Services */}
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Logo Upload (Optional)
+            <label htmlFor="services" className="block text-sm font-medium mb-2">
+              Primary Services (3-5 max) *
             </label>
-            <div className="border-2 border-dashed border-[#39FF14]/30 rounded-lg p-8 text-center">
-              <Upload className="w-8 h-8 text-[#39FF14]/60 mx-auto mb-2" />
-              <p className="text-sm text-[#f7f5f2]/60">
-                Drag & drop your logo here, or click to browse
-              </p>
-              <p className="text-xs text-[#f7f5f2]/40 mt-1">
-                PNG, JPG up to 5MB
-              </p>
-            </div>
+            <input
+              type="text"
+              id="services"
+              name="services"
+              required
+              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
+              placeholder="Botox, Dermal Fillers, Laser Hair Removal, CoolSculpting"
+            />
+          </div>
+
+          {/* Contact Preference */}
+          <div>
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                name="share_ok"
+                value="yes"
+                className="w-4 h-4 rounded border-2 border-[#39FF14]/50 bg-transparent checked:bg-[#39FF14] checked:border-[#39FF14]"
+              />
+              <span className="text-sm text-[#f7f5f2]/90">
+                It's okay to contact me about this order and future services
+              </span>
+            </label>
           </div>
 
           {/* Submit Button */}
-          <div className="pt-6">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[#39FF14] text-[#0c2f4a] py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? 'Processing Order...' : 'Start My 24-Hour Kit - $249'}
-            </button>
-            
-            <p className="text-xs text-[#f7f5f2]/60 text-center mt-3">
-              Secure order • 24-hour delivery • One free revision included
-            </p>
-          </div>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full bg-[#39FF14] text-[#0c2f4a] py-4 rounded-xl text-xl font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {submitting ? "Submitting…" : `Start My 24-Hour Kit — $${price}`}
+          </button>
+
+          <p className="text-center text-sm text-[#f7f5f2]/60">
+            Secure order • 24-hour delivery • One minor revision included
+          </p>
         </form>
       </div>
     </div>
+  );
+}
+
+export default function OrderPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] flex items-center justify-center">Loading...</div>}>
+      <OrderForm />
+    </Suspense>
   );
 }
