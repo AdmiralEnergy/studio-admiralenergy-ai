@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Check, ArrowRight, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { MEDSPA_CONTENT, addUtm } from './constants';
+import WorkShowcase from './_components/WorkShowcase';
 
 // Analytics interface
 declare global {
@@ -102,8 +103,11 @@ export default function MedspaPage() {
         </div>
       </section>
 
+      {/* Work Showcase */}
+      <WorkShowcase />
+
       {/* Pricing Card */}
-      <section className="px-4 pb-16">
+      <section id="pricing-section" className="px-4 pb-16">
         <div className="max-w-2xl mx-auto">
           <form onSubmit={handleOrderSubmit} method="GET" action="/order">
             {/* Hidden UTM fields */}

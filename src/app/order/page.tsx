@@ -49,8 +49,7 @@ function OrderForm() {
     try {
       const res = await fetch("/__forms.html", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data as any).toString(),
+        body: data, // Use FormData directly for multipart/form-data
       });
       
       if (res.ok) {
@@ -118,11 +117,14 @@ function OrderForm() {
         <form 
           name="order" 
           onSubmit={handleSubmit}
+          encType="multipart/form-data"
           className="bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-8 space-y-6"
         >
           {/* Netlify Forms detector fields */}
           <input type="hidden" name="form-name" value="order" />
           <input type="hidden" name="package" value={inferredPackage} />
+          {/* Honeypot field for spam protection */}
+          <input type="hidden" name="bot-field" />
 
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -170,20 +172,23 @@ function OrderForm() {
             />
           </div>
 
-          {/* Logo URL (instead of file upload for Netlify Forms compatibility) */}
+          {/* Logo File Upload */}
           <div>
-            <label htmlFor="logoUrl" className="block text-sm font-medium mb-2">
-              Logo URL (optional)
+            <label htmlFor="logo" className="block text-sm font-medium mb-2">
+              Upload Logo (optional)
             </label>
-            <input
-              type="url"
-              id="logoUrl"
-              name="logoUrl"
-              className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors"
-              placeholder="https://yourspa.com/logo.png"
-            />
+            <div className="relative">
+              <input
+                type="file"
+                id="logo"
+                name="logo"
+                accept="image/*"
+                className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-[#39FF14] file:text-[#0c2f4a] hover:file:bg-[#39FF14]/90"
+              />
+              <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#39FF14]/60 pointer-events-none" />
+            </div>
             <p className="text-xs text-[#f7f5f2]/60 mt-1">
-              Link to your logo file (PNG/JPG). We'll email you for file upload if needed.
+              PNG, JPG, or SVG format. Max 5MB. High-res preferred for best results.
             </p>
           </div>
 
