@@ -1,44 +1,51 @@
 // Medspa Content Constants
 export const MEDSPA_CONTENT = {
   hero: {
-    h1: "Medspa Content Accelerator — 24-Hour Promo Kit",
-    subhead: "A month of on-brand content in one day. AI avatar video + 20 visuals. No filming.",
+    h1: "Clinic Intro Video — Professional AI Host",
+    subhead: "Get your first marketing video done in 24 hours. No filming, no editing, no hassle.",
     bullets: [
-      "Save a day of shooting and editing",
-      "Look polished and consistent across platforms", 
-      "Simple intake → done within 24 hours"
+      "Ready in 24 hours or less",
+      "Professional AI host with your script", 
+      "Add branded visuals for complete package"
     ]
   },
-  
-  features: [
-    {
-      title: "45–60s Signature AI Video",
-      description: "Professional AI spokesperson delivers your key message with your branding"
-    },
-    {
-      title: "20 Branded Visuals",
-      description: "Ready-to-post graphics matching your brand colors and style"
-    },
-    {
-      title: "Caption Pack (7 posts) + 1 revision",
-      description: "Social media captions optimized for engagement with one free revision"
-    }
-  ],
-  
-  process: [
-    { step: "Intake", description: "Fill a 2-min form" },
-    { step: "Draft", description: "We draft script & style" },
-    { step: "Generate", description: "Generate video + visuals" },
-    { step: "Deliver", description: "Deliver drive link + posting guide" }
-  ],
   
   pricing: {
-    base: 249,
-    addOns: [
-      { name: "2nd AI Video", price: 59 },
-      { name: "Extra Visuals Pack", price: 49 }
-    ]
+    base: 49,
+    videosAddon: 99
   },
+  
+  package: {
+    title: "Clinic Introduction Video",
+    price: "$49",
+    description: "Professional AI-hosted video introducing your clinic and services",
+    includes: [
+      "45-60 second professional video",
+      "AI host with natural speech",
+      "Your script and messaging",
+      "Basic branding integration",
+      "MP4 delivery within 24 hours"
+    ],
+    addon: {
+      title: "Add Branded Visuals",
+      price: "+$99",
+      description: "Complete visual package to maximize your marketing impact",
+      includes: [
+        "20 branded social media graphics",
+        "Instagram story templates", 
+        "Facebook post designs",
+        "Professional color matching",
+        "Ready-to-post formats"
+      ]
+    }
+  },
+  
+  process: [
+    { step: "Order", description: "Choose video + visuals" },
+    { step: "Intake", description: "Share your clinic details" },
+    { step: "Create", description: "We produce your content" },
+    { step: "Deliver", description: "Download link within 24hrs" }
+  ],
   
   faq: [
     {

@@ -24,7 +24,16 @@ interface FormData {
   offerLine: string;
 }
 
-export default function OrderPage() {
+interface OrderPageProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default function OrderPage({ searchParams }: OrderPageProps) {
+  // Derive package from URL parameters
+  const addVisuals = searchParams?.add_visuals === "1";
+  const inferredPackage = addVisuals ? "poc_plus" : "poc_video";
+  const totalPrice = addVisuals ? 148 : 49;
+  
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -49,13 +58,13 @@ export default function OrderPage() {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     
-    // Add UTM parameters if available
+    // Add UTM parameters and package info
     const urlParams = new URLSearchParams(window.location.search);
     formData.append('utm_source', urlParams.get('utm_source') || 'direct');
     formData.append('utm_medium', urlParams.get('utm_medium') || 'website');
-    formData.append('utm_campaign', urlParams.get('utm_campaign') || 'medspa_accelerator');
+    formData.append('utm_campaign', urlParams.get('utm_campaign') || 'medspa_poc');
     formData.append('utm_content', urlParams.get('utm_content') || 'order_form');
-    formData.append('package', 'medspa_24hr');
+    formData.append('package', inferredPackage);
 
     try {
       const res = await fetch("/__forms.html", {
@@ -77,7 +86,7 @@ export default function OrderPage() {
         
         // Build thank-you page URL with parameters for personalization
         const thankYouUrl = new URLSearchParams();
-        thankYouUrl.set('sku', 'medspa_24hr');
+        thankYouUrl.set('package', inferredPackage);
         thankYouUrl.set('email', formData.get('email') as string);
         
         // Preserve UTM parameters
@@ -116,19 +125,34 @@ export default function OrderPage() {
             Back to Medspa Page
           </Link>
           
-          <h1 className="text-3xl font-bold mb-2">Order Your 24-Hour Content Kit</h1>
+          <h1 className="text-3xl font-bold mb-2">Complete Your Order</h1>
           <p className="text-[#f7f5f2]/80">
-            Fill out this quick form to get started. We'll have your content ready in 24 hours.
+            Just a few details and we'll start creating your content. Delivered within 24 hours.
           </p>
         </div>
 
         {/* Form */}
+        {/* Package Summary */}
+        <div className="mb-8 bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-6">
+          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+          <div className="flex justify-between items-center">
+            <span>{addVisuals ? "Clinic Video + Branded Visuals" : "Clinic Introduction Video"}</span>
+            <span className="text-2xl font-bold text-[#39FF14]">${totalPrice}</span>
+          </div>
+          {addVisuals && (
+            <div className="text-sm text-[#f7f5f2]/70 mt-2">
+              Includes: AI-hosted video + 20 branded social media graphics
+            </div>
+          )}
+        </div>
+
         <form 
           onSubmit={handleSubmit}
           className="bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-8 space-y-6"
-          name="medspa-order"
+          name="order"
         >
-          <input type="hidden" name="form-name" value="medspa-order" />
+          <input type="hidden" name="form-name" value="order" />
+          <input type="hidden" name="package" value={inferredPackage} />
           
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
