@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Check, Play, X, Star, Clock, Zap, Users } from 'lucide-react';
+import Image from 'next/image';
 import { MEDSPA_CONTENT, addUtm } from './constants';
 
 // Extend window interface for analytics
@@ -56,6 +57,18 @@ export default function MedspaPage() {
       {/* Hero Section */}
       <section className="relative px-4 pt-24 pb-16 lg:pt-32 lg:pb-24">
         <div className="max-w-6xl mx-auto text-center">
+          {/* Logo */}
+          <div className="flex items-center justify-center py-6 mb-8">
+            <Image
+              src="/logos/ae_studios_logo.png"
+              alt="Admiral Energy Studios Logo"
+              width={160}
+              height={160}
+              priority
+              className="rounded-xl shadow-lg"
+            />
+          </div>
+          
           <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
             {MEDSPA_CONTENT.hero.h1}
           </h1>
