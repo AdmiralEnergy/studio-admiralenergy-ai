@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logos/ae_studios_logo.png",
   },
+  openGraph: {
+    title: "Medspa 24-Hour AI Promo Kit",
+    description: "Logo in, content out. 24-hour AI presenter video + optional visuals.",
+    images: ["/logos/ae_studios_logo.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

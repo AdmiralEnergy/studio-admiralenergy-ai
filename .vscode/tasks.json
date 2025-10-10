@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { 
+      "label": "Build", 
+      "type": "shell", 
+      "command": "npm run build", 
+      "group": "build", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Open Netlify Admin", 
+      "type": "shell", 
+      "command": "netlify open", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Headers: Medspa", 
+      "type": "shell", 
+      "command": "curl -I https://studioadmiral.netlify.app/medspa", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Headers: Logo", 
+      "type": "shell", 
+      "command": "curl -I https://studioadmiral.netlify.app/logos/ae_studios_logo.png", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Deploy Prod", 
+      "type": "shell", 
+      "command": "netlify deploy --prod", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Lighthouse: Medspa", 
+      "type": "shell", 
+      "command": "npx -y lighthouse https://studioadmiral.netlify.app/medspa --quiet --chrome-flags='--headless' --only-categories=performance,accessibility,seo", 
+      "problemMatcher": [] 
+    },
+    { 
+      "label": "Lighthouse: Order", 
+      "type": "shell", 
+      "command": "npx -y lighthouse https://studioadmiral.netlify.app/order --quiet --chrome-flags='--headless' --only-categories=performance,accessibility,seo", 
+      "problemMatcher": [] 
+    }
+  ]
+}

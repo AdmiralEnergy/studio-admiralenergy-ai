@@ -19,66 +19,40 @@ declare global {
 function OrderForm() {
   const router = useRouter();
   const sp = useSearchParams();
-  const addVisuals = sp?.get("add_visuals") === "1";
-  const inferredPackage = addVisuals ? "poc_plus" : "poc_video";
-  const price = addVisuals ? 148 : 49; // $49 base, +$99 visuals
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  // Parse URL params for package and pricing
+  const addVisuals = sp?.get("add_visuals") === "1";
+  const pkg: 'poc_video' | 'poc_plus' = addVisuals ? 'poc_plus' : 'poc_video';
+  const price = addVisuals ? 148 : 49;
+
+  const utm = typeof window !== 'undefined' ? window.location.search : '';
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const max = 10 * 1024 * 1024; // 10MB
+    const okTypes = ['image/png', 'image/jpeg', 'image/svg+xml'];
+    if (!okTypes.includes(f.type)) {
+      setError('Please upload PNG, JPG, or SVG.');
+      return;
+    }
+    if (f.size > max) {
+      setError('File too large (max 10MB).');
+      return;
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (error) return;
     setSubmitting(true);
 
-    const form = e.currentTarget;
-    const data = new FormData(form);
-
-    // Ensure Netlify Forms fields are set
-    data.set("form-name", "order");
-    data.set("package", inferredPackage);
-    
-    // Add UTM parameters if available
-    const utmSource = sp?.get("utm_source") || "direct";
-    const utmMedium = sp?.get("utm_medium") || "website";
-    const utmCampaign = sp?.get("utm_campaign") || "medspa_poc";
-    const utmContent = sp?.get("utm_content") || "order_form";
-    
-    data.set("utm_source", utmSource);
-    data.set("utm_medium", utmMedium);
-    data.set("utm_campaign", utmCampaign);
-    data.set("utm_content", utmContent);
-
-    try {
-      const res = await fetch("/__forms.html", {
-        method: "POST",
-        body: data, // Use FormData directly for multipart/form-data
-      });
-      
-      if (res.ok) {
-        // Analytics
-        if (typeof window !== "undefined") {
-          if (window.gtag) {
-            window.gtag("event", "generate_lead", { 
-              method: "netlify_form", 
-              package: inferredPackage,
-              value: price 
-            });
-          }
-          if (window.rdt) {
-            if (typeof window.rdt === "function") window.rdt("Lead");
-            if (window.rdt.track) window.rdt.track("Lead");
-          }
-        }
-
-        // Redirect to thank-you page with package info
-        router.push(`/thank-you?package=${inferredPackage}&email=${data.get("email")}`);
-      } else {
-        setSubmitting(false);
-        alert("There was a problem submitting the form. Please try again.");
-      }
-    } catch {
-      setSubmitting(false);
-      alert("Network error. Please try again.");
-    }
-  }
+    // Since this is a static form submission, we'll fire analytics on the thank-you page instead
+    // Form submits directly to Netlify Forms
+  };
 
   return (
     <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2] py-12">
@@ -115,16 +89,29 @@ function OrderForm() {
 
         {/* Order Form */}
         <form 
-          name="order" 
-          onSubmit={handleSubmit}
+          action={`/__forms.html${utm}`}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
           encType="multipart/form-data"
+          name="order"
           className="bg-[#0c2f4a]/50 border border-[#39FF14]/20 rounded-xl p-8 space-y-6"
         >
           {/* Netlify Forms detector fields */}
           <input type="hidden" name="form-name" value="order" />
-          <input type="hidden" name="package" value={inferredPackage} />
+          <input type="hidden" name="package" value={pkg} />
+          <input type="hidden" name="price" value={price} />
+          
+          {/* UTM Parameters */}
+          <input type="hidden" name="utm_source" value={sp?.get("utm_source") || "direct"} />
+          <input type="hidden" name="utm_medium" value={sp?.get("utm_medium") || "website"} />
+          <input type="hidden" name="utm_campaign" value={sp?.get("utm_campaign") || "medspa_poc"} />
+          <input type="hidden" name="utm_content" value={sp?.get("utm_content") || "order_form"} />
+          
           {/* Honeypot field for spam protection */}
-          <input type="hidden" name="bot-field" />
+          <p className="hidden">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
 
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -175,20 +162,22 @@ function OrderForm() {
           {/* Logo File Upload */}
           <div>
             <label htmlFor="logo" className="block text-sm font-medium mb-2">
-              Upload Logo (optional)
+              Logo (PNG/JPG/SVG, ≤10MB)
             </label>
             <div className="relative">
               <input
                 type="file"
                 id="logo"
                 name="logo"
-                accept="image/*"
+                accept=".png,.jpg,.jpeg,.svg"
+                onChange={onFileChange}
                 className="w-full px-4 py-3 bg-[#0c2f4a] border border-[#39FF14]/30 rounded-lg text-[#f7f5f2] focus:outline-none focus:border-[#39FF14] transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-[#39FF14] file:text-[#0c2f4a] hover:file:bg-[#39FF14]/90"
               />
               <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#39FF14]/60 pointer-events-none" />
             </div>
+            {error && <p role="alert" className="text-red-400 text-sm mt-1">{error}</p>}
             <p className="text-xs text-[#f7f5f2]/60 mt-1">
-              PNG, JPG, or SVG format. Max 5MB. High-res preferred for best results.
+              PNG, JPG, or SVG format. Max 10MB. High-res preferred for best results.
             </p>
           </div>
 
@@ -240,10 +229,11 @@ function OrderForm() {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || !!error}
+            aria-live="polite"
             className="w-full bg-[#39FF14] text-[#0c2f4a] py-4 rounded-xl text-xl font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submitting ? "Submitting…" : `Start My 24-Hour Kit — $${price}`}
+            {submitting ? "Submitting…" : `Submit Order — $${price}`}
           </button>
 
           <p className="text-center text-sm text-[#f7f5f2]/60">

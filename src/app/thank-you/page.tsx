@@ -4,33 +4,7 @@
 import { useEffect, useState } from 'react';
 import { Check, ArrowRight, Calendar, FileText } from 'lucide-react';
 import Link from 'next/link';
-
-// Analytics interface
-declare global {
-  interface Window {
-    gtag?: (type: string, action: string, params?: Record<string, unknown>) => void;
-    rdt?: ((eventName: string, params?: Record<string, unknown>) => void) & {
-      track?: (eventName: string, params?: Record<string, unknown>) => void;
-    };
-  }
-}
-
-// Analytics helper
-const track = (
-  eventName: string,
-  params: Record<string, unknown> = {}
-) => {
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, params);
-  }
-  
-  // Reddit pixel - map to "Purchase" for conversion tracking
-  const mapped = eventName === "order_confirmed" ? "Purchase" : "PageVisit";
-  if (typeof window !== "undefined") {
-    if (typeof window.rdt === "function") window.rdt(mapped, params);
-    if (typeof window.rdt?.track === "function") window.rdt.track(mapped, params);
-  }
-};
+import { track, trackRedditLead } from '../../lib/analytics';
 
 export default function ThankYouPage() {
   const [orderPackage, setOrderPackage] = useState<string>('');
@@ -39,19 +13,22 @@ export default function ThankYouPage() {
   useEffect(() => {
     // Extract URL params for tracking
     const urlParams = new URLSearchParams(window.location.search);
-    const pkg = urlParams.get('package') || 'poc_video';  // poc_video or poc_plus
+    const pkg = urlParams.get('package') || 'poc_video';
     const email = urlParams.get('email') || '';
+    const price = pkg === 'poc_plus' ? 148 : 49;
     
     setOrderPackage(pkg);
     setCustomerEmail(email);
     
-    // Track successful conversion
-    track('order_confirmed', {
+    // Track successful conversion - this is where we fire generate_lead
+    track('generate_lead', {
       package: pkg,
-      email: email,
-      value: pkg === 'poc_plus' ? 148 : 49,
+      price: price,
       currency: 'USD'
     });
+    
+    // Fire Reddit Lead conversion
+    trackRedditLead();
   }, []);
 
   // Package details for display

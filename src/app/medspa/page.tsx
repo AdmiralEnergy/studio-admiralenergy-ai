@@ -5,66 +5,57 @@ import { Check, ArrowRight, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { MEDSPA_CONTENT, addUtm } from './constants';
 import WorkShowcase from './_components/WorkShowcase';
-
-// Analytics interface
-declare global {
-  interface Window {
-    gtag?: (type: string, action: string, params?: Record<string, unknown>) => void;
-    rdt?: ((eventName: string, params?: Record<string, unknown>) => void) & {
-      track?: (eventName: string, params?: Record<string, unknown>) => void;
-    };
-  }
-}
-
-// Analytics helper
-const track = (eventName: string, params: Record<string, unknown> = {}) => {
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, params);
-  }
-  
-  const mapped = eventName === "select_package" ? "Lead" : "PageVisit";
-  if (typeof window !== "undefined") {
-    if (typeof window.rdt === "function") window.rdt(mapped, params);
-    if (typeof window.rdt?.track === "function") window.rdt.track(mapped, params);
-  }
-};
+import { track, getUtmParams } from '../../lib/analytics';
 
 export default function MedspaPage() {
   const [addVisuals, setAddVisuals] = useState(false);
-  const [utmParams, setUtmParams] = useState({
-    utm_source: '',
-    utm_medium: '',
-    utm_campaign: '',
-    utm_content: ''
-  });
+  const [utmParams, setUtmParams] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    // Extract UTM parameters from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    setUtmParams({
-      utm_source: urlParams.get('utm_source') || 'direct',
-      utm_medium: urlParams.get('utm_medium') || 'website',
-      utm_campaign: urlParams.get('utm_campaign') || 'medspa_poc',
-      utm_content: urlParams.get('utm_content') || 'landing'
-    });
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const addVisualsParam = params.get('add_visuals') === '1';
+      setAddVisuals(addVisualsParam);
+      setUtmParams(getUtmParams());
+    }
   }, []);
+
+  // Derived values
+  const pkg: 'poc_video' | 'poc_plus' = addVisuals ? 'poc_plus' : 'poc_video';
+  const price = addVisuals ? 148 : 49;
+
+  const makeOrderUrl = () => {
+    if (typeof window === 'undefined') return '/order';
+    const u = new URL('/order', window.location.origin);
+    const params = new URLSearchParams(window.location.search);
+    // Preserve all existing params
+    for (const [k, v] of params.entries()) {
+      u.searchParams.set(k, v);
+    }
+    // Ensure add_visuals is set if needed
+    if (addVisuals) {
+      u.searchParams.set('add_visuals', '1');
+    }
+    return u.toString();
+  };
 
   const handleOrderSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Fire analytics
     track('select_package', {
-      tier: addVisuals ? 'poc_plus' : 'poc_video',
-      value: addVisuals ? 148 : 49,
-      add_visuals: addVisuals ? 1 : 0
+      tier: pkg,
+      price,
+      ...utmParams
     });
-    
-    // Submit form to /order with UTM preservation
-    const form = e.target as HTMLFormElement;
-    form.submit();
+
+    // Navigate to order page
+    if (typeof window !== 'undefined') {
+      window.location.href = makeOrderUrl();
+    }
   };
 
-  const totalPrice = MEDSPA_CONTENT.pricing.base + (addVisuals ? MEDSPA_CONTENT.pricing.videosAddon : 0);
+  const totalPrice = price;
 
   return (
     <div className="min-h-screen bg-[#0c2f4a] text-[#f7f5f2]">

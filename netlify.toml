@@ -1,8 +1,20 @@
 [build]
   command = "npm run build"
-
-[build.environment]
-  NODE_VERSION = "20"   # Stable on Netlify; bump to 22 later if you really need it
+  environment = { NODE_VERSION = "22" }
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Aggressive caching for static assets
+[[headers]]
+  for = "/{logos,gallery,samples}/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

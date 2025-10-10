@@ -1,24 +1,26 @@
-<!-- public/__forms.html -->
 <!doctype html>
-<html>
-  <head><meta charset="utf-8" /></head>
-  <body>
-    <!-- Hidden "detector" form for Netlify -->
-    <form name="order" data-netlify="true" hidden>
-      <input type="hidden" name="form-name" value="order" />
-      <input type="hidden" name="bot-field" />
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <input type="text" name="clinic" />
-      <input type="file" name="logo" />
-      <textarea name="tagline"></textarea>
-      <input type="text" name="services" />
-      <input type="checkbox" name="share_ok" />
-      <input type="text" name="package" />
-      <input type="text" name="utm_source" />
-      <input type="text" name="utm_medium" />
-      <input type="text" name="utm_campaign" />
-      <input type="text" name="utm_content" />
-    </form>
-  </body>
+<html lang="en">
+<head><meta charset="utf-8"><title>Forms Shim</title></head>
+<body>
+  <form name="order" method="POST" data-netlify="true" enctype="multipart/form-data" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="order" />
+    <p style="display:none">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="clinic" />
+    <textarea name="tagline"></textarea>
+    <input type="text" name="services" />
+    <input type="checkbox" name="share_ok" />
+    <input type="hidden" name="package" />
+    <input type="hidden" name="price" />
+    <input type="text" name="utm_source" />
+    <input type="text" name="utm_medium" />
+    <input type="text" name="utm_campaign" />
+    <input type="text" name="utm_content" />
+    <input type="file" name="logo" />
+    <button type="submit">Send</button>
+  </form>
+</body>
 </html>

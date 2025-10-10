@@ -10,35 +10,35 @@ const showcaseItems = [
     id: 1,
     title: "Before & After: Botox Results",
     description: "Professional video showcasing natural-looking results",
-    image: "/gallery/dashboard.svg",
+    image: "/samples/sample1.svg",
     alt: "Professional botox results showcase"
   },
   {
     id: 2,
     title: "Dermal Filler Campaign",
     description: "Complete social media package with 20 branded visuals",
-    image: "/gallery/narrative.svg",
+    image: "/samples/sample2.svg",
     alt: "Dermal filler social media campaign"
   },
   {
     id: 3,
     title: "CoolSculpting Success Story",
     description: "AI-hosted video + branded Instagram stories",
-    image: "/gallery/storyboard.svg",
+    image: "/samples/sample3.svg",
     alt: "CoolSculpting transformation story"
   },
   {
     id: 4,
     title: "Laser Treatment Series",
     description: "Educational content that converts browsers to bookers",
-    image: "/gallery/dashboard.svg",
+    image: "/samples/sample4.svg",
     alt: "Laser treatment educational series"
   },
   {
     id: 5,
     title: "Med Spa Brand Package",
     description: "Full rebrand with consistent messaging across all platforms",
-    image: "/gallery/narrative.svg",
+    image: "/samples/sample5.svg",
     alt: "Complete med spa branding package"
   }
 ];
