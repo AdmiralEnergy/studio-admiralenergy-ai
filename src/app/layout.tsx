@@ -4,14 +4,13 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Admiral Energy Studios",
-  description: "AI-powered content creation for Medspas",
+  metadataBase: new URL("https://studio.admiralenergy.ai"),
+  title: "Admiral Energy Studios — Medspa 24-Hour AI Promo",
+  description: "Logo in, content out. 24-hour AI presenter video + optional visuals.",
   icons: {
     icon: "/logos/ae_studios_logo.png",
   },
   openGraph: {
-    title: "Medspa 24-Hour AI Promo Kit",
-    description: "Logo in, content out. 24-hour AI presenter video + optional visuals.",
     images: ["/logos/ae_studios_logo.png"],
   },
   twitter: {
