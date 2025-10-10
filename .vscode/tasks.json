@@ -23,7 +23,7 @@
     { 
       "label": "Headers: Logo", 
       "type": "shell", 
-      "command": "curl -I https://studioadmiral.netlify.app/logos/ae_studios_logo.png", 
+      "command": "curl -I https://studio.admiralenergy.ai/logos/ae_studios_logo.png", 
       "problemMatcher": [] 
     },
     { 
