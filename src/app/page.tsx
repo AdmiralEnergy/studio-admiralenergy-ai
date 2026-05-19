@@ -1,506 +1,134 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { ArrowUpRight, Check, Sparkles, PlayCircle, Workflow, LineChart } from "lucide-react";
 
-type TierKey = "basic" | "standard" | "premium";
-
-const FIVERR: Record<TierKey, string> = {
-  basic: process.env.NEXT_PUBLIC_FIVERR_BASIC_URL || "#",
-  standard: process.env.NEXT_PUBLIC_FIVERR_STANDARD_URL || "#",
-  premium: process.env.NEXT_PUBLIC_FIVERR_PREMIUM_URL || "#",
-};
-
-const tiers: Array<{
-  key: TierKey;
-  name: string;
-  price: string;
-  delivery: string;
-  revisions: string;
-  bullets: string[];
-}> = [
+const portfolioItems = [
   {
-    key: "basic",
-    name: "Basic",
-    price: "$50",
-    delivery: "3-day delivery",
-    revisions: "1 revision",
-    bullets: [
-      "1 avatar hero image + 3 poses",
-      "Consistent character design",
-      "Fine-tuned model creation",
-      "4 AI images, branded images",
-      "Persona creation + social content",
-    ],
+    title: "Fulani Cornrows + Gold Accessories",
+    description: "Editorial braid detail study with clean parting focus and warm lighting.",
+    tags: ["Natural Hair", "Editorial", "Braids"],
   },
   {
-    key: "standard",
-    name: "Standard",
-    price: "$125",
-    delivery: "4-day delivery",
-    revisions: "2 revisions",
-    bullets: [
-      "6 images + outfits, PNGs",
-      "Style guide for reuse",
-      "Consistent character design",
-      "Fine-tuned model creation",
-      "9 AI images, branded images",
-      "Persona creation + social content",
-    ],
+    title: "Backyard Editorial Portraits",
+    description: "Soft outdoor portrait concepts designed for storytelling and beauty direction.",
+    tags: ["Portrait", "Creative", "Lifestyle"],
   },
   {
-    key: "premium",
-    name: "Premium",
-    price: "$250",
-    delivery: "5-day delivery",
-    revisions: "3 revisions",
-    bullets: [
-      "20 images, extensive style guide",
-      "Canva templates + 10 hooks",
-      "Consistent character design",
-      "Fine-tuned model creation",
-      "20 AI images, branded images",
-      "Persona creation + social content",
-    ],
+    title: "Natural Hair Journey Clips",
+    description: "Process-driven clips highlighting texture, prep, and finished natural styles.",
+    tags: ["Texture", "Reels", "Journey"],
+  },
+  {
+    title: "Magazine-Inspired Beauty Edits",
+    description: "Polished visual concepts inspired by editorial beauty layouts.",
+    tags: ["Beauty", "Mood", "Editorial"],
+  },
+  {
+    title: "Texture Education Carousels",
+    description: "Beginner-friendly social slides focused on texture language and care basics.",
+    tags: ["Education", "Social", "Beginner"],
+  },
+  {
+    title: "Student Portfolio Clip Samples Coming Soon",
+    description: "Early examples of clean vertical edits for student and new stylist portfolios.",
+    tags: ["Student Support", "Vertical", "Coming Soon"],
   },
 ];
-
-type GalleryItem = {
-  title: string;
-  description: string;
-  asset: string;
-};
-
-type FaqItem = {
-  question: string;
-  answer: string;
-};
-
-const HERO_STATS = [
-  { label: "AI personas created", value: "120+" },
-  { label: "campaigns automated", value: "340" },
-  { label: "faster production", value: "3.4×" },
-];
-
-const TRUST_LOGOS = [
-  { name: "NextEra Ventures", logo: "/logos/nextera.svg" },
-  { name: "GridBridge", logo: "/logos/gridbridge.svg" },
-  { name: "Helios Storage", logo: "/logos/helios.svg" },
-  { name: "Atlas Renewables", logo: "/logos/atlas.svg" },
-  { name: "Flux Mobility", logo: "/logos/flux.svg" },
-];
-
-const BENEFITS = [
-  {
-    icon: Sparkles,
-    title: "AI-powered creative workflow",
-    description:
-      "Generate consistent avatars and branded visuals using our integrated OpenArt + D-ID + CapCut pipeline.",
-  },
-  {
-    icon: Workflow,
-    title: "Professional video production",
-    description:
-      "Transform static designs into speaking AI personas with motion graphics and seamless editing workflows.",
-  },
-  {
-    icon: LineChart,
-    title: "Strategic LLM optimization",
-    description:
-      "Multi-model prompting (Claude, GPT, Gemini) ensures your content hits the right tone and converts audiences.",
-  },
-];
-
-const GALLERY: GalleryItem[] = [
-  {
-    title: "AI Avatar Production Pipeline",
-    description: "See our OpenArt + D-ID + CapCut workflow in action—from concept to speaking persona.",
-    asset: "/gallery/dashboard.svg",
-  },
-  {
-    title: "Multi-Platform Content Suite",
-    description: "Professional video assets optimized for social, ads, and presentations—all AI-generated.",
-    asset: "/gallery/storyboard.svg",
-  },
-  {
-    title: "Energy Brand Showcase",
-    description: "Industry-specific avatars and messaging that resonates with energy sector audiences.",
-    asset: "/gallery/narrative.svg",
-  },
-];
-
-const FAQS: FaqItem[] = [
-  {
-    question: "How fast can we launch after kickoff?",
-    answer:
-      "We deliver your AI avatar package with all assets within 3-5 business days, including character design, video creation, and branded templates.",
-  },
-  {
-    question: "What's included in the production workflow?",
-    answer:
-      "Every package includes OpenArt.ai character generation, D-ID avatar creation, CapCut editing, and strategic prompt engineering using multiple LLMs.",
-  },
-  {
-    question: "Can you match our existing brand guidelines?",
-    answer:
-      "Absolutely. We analyze your brand assets and ensure consistent visual identity across all AI-generated content and avatar designs.",
-  },
-  {
-    question: "Do you offer revisions and iterations?",
-    answer:
-      "Yes. Each package includes multiple revision rounds, and we work closely with you to perfect the final deliverables before handoff.",
-  },
-];
-
-type AnalyticsParams = Record<string, string | number | boolean | undefined>;
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-    rdt?: ((eventName: string, params?: AnalyticsParams) => void) & {
-      track?: (eventName: string, params?: AnalyticsParams) => void;
-    };
-  }
-}
-
-const track = (name: string, params: AnalyticsParams = {}) => {
-  if (typeof window === "undefined") return;
-
-  window.gtag?.("event", name, params);
-  const map: Record<string, string> = {
-    proposal_form_submit: "Lead",
-    select_package: "AddToCart",
-    purchase: "Purchase",
-  };
-
-  const reddit = (window as Window & {
-    rdt?: ((eventName: string, params?: AnalyticsParams) => void) & {
-      track?: (eventName: string, params?: AnalyticsParams) => void;
-    };
-  }).rdt;
-
-  if (!reddit) return;
-
-  const mappedEvent = map[name] ?? "ViewContent";
-  if (typeof reddit.track === "function") {
-    reddit.track(mappedEvent, params);
-  } else {
-    reddit(mappedEvent, params);
-  }
-};
-
-const onOrder = (key: TierKey) => {
-  track("select_package", { tier: key });
-  track("outbound_fiverr_click", { tier: key });
-  window.open(FIVERR[key], "_blank", "noopener,noreferrer");
-};
 
 export default function Page() {
-
-
-  useEffect(() => {
-    track("view_home");
-  }, []);
-
   return (
-    <div className="bg-cream text-navy">
-      <header className="relative overflow-hidden">
-        <div className="hero-bg absolute inset-0" />
-        <div className="absolute inset-0 bg-gradient-to-br from-cream/90 via-cream/80 to-cream/90 backdrop-blur-sm" />
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-6 pb-24 pt-20 lg:flex-row lg:items-center lg:px-10">
-          <div className="max-w-2xl space-y-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-navy/70 shadow-sm backdrop-blur">
-              <Sparkles className="h-4 w-4 text-neon" />
-              Creative tech studio
-            </span>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Build AI personas that talk, move, and sell your brand.
-            </h1>
-            <p className="text-lg text-navy/70">
-              Admiral Studio blends OpenArt.ai, D-ID, CapCut, and leading LLMs (Claude, ChatGPT, Gemini) to turn your energy brand into an always-on content engine — fast, personal, and scalable.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-2 text-sm text-navy/60 mt-6">
-              <span className="flex items-center gap-1">
-                <span className="font-semibold text-navy">120+</span> AI personas created
-              </span>
-              <span className="text-navy/30">•</span>
-              <span className="flex items-center gap-1">
-                <span className="font-semibold text-navy">340</span> campaigns automated
-              </span>
-              <span className="text-navy/30">•</span>
-              <span className="flex items-center gap-1">
-                <span className="font-semibold text-navy">3.4×</span> faster production
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row mt-8">
-              <button
-                type="button"
-                onClick={() => onOrder("premium")}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
-              >
-                Request Proposal
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => onOrder("standard")}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-semibold text-navy/80 transition hover:-translate-y-0.5 hover:border-neon hover:text-navy"
-              >
-                Explore Packages
-                <PlayCircle className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-          <div className="relative w-full max-w-md self-center overflow-hidden rounded-3xl border border-navy/10 bg-white/70 p-8 shadow-xl shadow-navy/20 backdrop-blur">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-neon/10 via-transparent to-navy/10" />
-            <div className="space-y-6">
-              <h2 className="text-xl font-semibold">From Avatar to Ad</h2>
-              <p className="text-sm text-navy/70">
-                See how Admiral Studio brings your brand to life with:
-              </p>
-              <ul className="space-y-4 text-sm text-navy/80">
-                <li className="flex items-start gap-3">
-                  <Sparkles className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Visuals generated in OpenArt.ai</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <PlayCircle className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Realistic motion and voice with D-ID</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Workflow className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Editing and storytelling in CapCut</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <LineChart className="mt-0.5 h-4 w-4 text-neon" />
-                  <span>Smart scripts written by advanced LLMs</span>
-                </li>
-              </ul>
-              <button
-                type="button"
-                onClick={() => onOrder("standard")}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
-              >
-                View Studio Workflow
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-cream text-black">
+      <header className="sticky top-0 z-50 border-b border-black/10 bg-cream/95 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+          <p className="font-serif text-lg font-semibold">Affirm Beauty Artistry</p>
+          <nav className="hidden items-center gap-6 text-sm md:flex">
+            <a href="#about">About</a><a href="#portfolio">Portfolio</a><a href="#support">Student Support</a><a href="#contact">Contact</a>
+          </nav>
+          <a href="#contact" className="rounded-full bg-green px-4 py-2 text-sm font-semibold text-white">Request a Clip</a>
         </div>
       </header>
 
-      <section className="section-padding bg-white/80">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-semibold mb-8">See Our AI Avatars in Action</h2>
-          <div className="relative overflow-hidden rounded-3xl border border-navy/10 bg-white shadow-xl shadow-navy/20 backdrop-blur mx-auto max-w-lg">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full aspect-square object-cover"
-            >
-              <source src="/showcase-demo.mp4" type="video/mp4" />
-              <div className="flex items-center justify-center aspect-square bg-gradient-to-br from-neon/10 via-transparent to-navy/10">
-                <div className="text-center space-y-4">
-                  <PlayCircle className="h-12 w-12 text-neon mx-auto" />
-                  <p className="text-navy/70 text-sm">1080x1080 Showcase Video Coming Soon</p>
-                </div>
-              </div>
-            </video>
-          </div>
-          <p className="mt-6 text-navy/70 max-w-2xl mx-auto">
-            Professional AI avatars that match your brand identity and speak directly to your energy sector audience.
-          </p>
-        </div>
-      </section>
-
-      <section id="pricing" className="section-padding bg-navy text-cream">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-cream/60">Pricing</p>
-            <h2 className="mt-4 text-3xl font-semibold">Choose the launch path that fits your energy team</h2>
-            <p className="mt-3 text-base text-cream/70">
-              Every package activates the same Admiral Studio squad. Fiverr handles contracts, billing, and milestone management.
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {tiers.map((tier) => (
-              <div
-                key={tier.key}
-                className="relative flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/20 backdrop-blur"
-              >
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold text-cream">{tier.name}</h3>
-                  <p className="text-3xl font-semibold text-neon">{tier.price}</p>
-                  <p className="text-sm text-cream/70">{tier.delivery}</p>
-                  <p className="text-sm text-cream/60">{tier.revisions}</p>
-                </div>
-                <ul className="mt-6 space-y-3 text-sm text-cream/70">
-                  {tier.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-4 w-4 flex-none text-neon" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  type="button"
-                  onClick={() => onOrder(tier.key)}
-                  className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-neon px-5 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
-                  aria-label={`Order ${tier.name} on Fiverr`}
-                >
-                  Order on Fiverr
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-padding bg-white/80">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-semibold mb-12">What Our Clients Say</h2>
-          <div className="relative overflow-hidden rounded-3xl border border-navy/10 bg-white p-8 shadow-xl shadow-navy/20">
-            <div className="space-y-6">
-              <div className="flex justify-center">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="h-5 w-5 text-neon" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <blockquote className="text-lg text-navy/80 italic">
-                "Testimonials from Fiverr reviews will appear here once we have them. Professional AI avatar creation that delivers results."
-              </blockquote>
-              <div className="text-sm text-navy/60">
-                <p className="font-semibold">Fiverr Client Review</p>
-                <p>Energy Sector Professional</p>
-              </div>
+      <main className="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 sm:py-14">
+        <section className="grid gap-8 rounded-3xl bg-white p-6 shadow-sm md:grid-cols-2 md:p-10">
+          <div>
+            <p className="mb-3 inline-flex rounded-full border border-green/20 bg-green/10 px-3 py-1 text-xs font-semibold text-green">Natural Hair Creative Brand</p>
+            <h1 className="font-serif text-3xl leading-tight sm:text-5xl">Natural Hair Artistry, Beauty Storytelling &amp; Student Portfolio Support</h1>
+            <p className="mt-4 text-black/75">Affirm Beauty Artistry is a natural hair creative brand documenting texture, beauty, and self-expression — while helping beauty students and new stylists turn raw footage into cleaner portfolio content.</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#contact" className="rounded-full bg-green px-5 py-3 text-sm font-semibold text-white">Request a Student Portfolio Clip</a>
+              <a href="#portfolio" className="rounded-full border border-black/20 px-5 py-3 text-sm font-semibold">View Creative Portfolio</a>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2 text-xs">
+              <span className="rounded-full bg-pink/20 px-3 py-1">Natural Hair Creative</span>
+              <span className="rounded-full bg-gold/20 px-3 py-1">Cosmetology School Graduate</span>
+              <span className="rounded-full bg-green/15 px-3 py-1">Currently Pursuing Natural Hair Licensure</span>
             </div>
           </div>
-          <p className="mt-6 text-sm text-navy/50">
-            Testimonial carousel will be updated with real Fiverr reviews
-          </p>
-        </div>
-      </section>
+          <div className="grid place-items-center rounded-3xl border border-dashed border-black/25 bg-cream p-8 text-center text-black/70 min-h-[280px]">Replace with Leigh backyard editorial portrait / hair content</div>
+        </section>
 
-      <section className="section-padding bg-navy text-cream">
-        <div className="mx-auto max-w-5xl rounded-[40px] border border-white/10 bg-gradient-to-br from-white/10 via-navy to-navy/80 p-12 shadow-2xl shadow-black/30">
-          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-xl space-y-4">
-              <p className="text-sm uppercase tracking-[0.3em] text-cream/60">Ready to collaborate</p>
-              <h2 className="text-3xl font-semibold text-white">
-                Let’s engineer your AI-native creative system together.
-              </h2>
-              <p className="text-base text-cream/70">
-                Share your launch goals and existing stack. We’ll map a Claude-powered roadmap with deliverables, cadences, and success metrics tailored to your energy vertical.
-              </p>
-            </div>
-            <div className="flex flex-col gap-4">
-              <button
-                type="button"
-                onClick={() => onOrder("standard")}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-neon px-6 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5"
-              >
-                Order on Fiverr
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => onOrder("premium")}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:border-neon hover:text-neon"
-              >
-                Start premium engagement
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
+        <section id="about" className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <h2 className="font-serif text-2xl">Meet Leigh</h2>
+            <p className="mt-4 text-black/80">Leigh is a natural hair creative and cosmetology school graduate from Avalon School of Cosmetology in Arizona. She completed 1,600 cosmetology hours and passed her written graduation test.</p>
+            <p className="mt-4 text-black/80">She did not complete the practical exam and is not currently licensed. She is now pursuing natural hair licensure while building Affirm Beauty Artistry as a space for natural hair storytelling, beginner-friendly texture education, and creative portfolio support.</p>
           </div>
-        </div>
-      </section>
-
-      <section className="py-8 bg-neon">
-        <div className="mx-auto max-w-6xl px-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-navy">
-            <p className="font-semibold">Get Started Today</p>
-            <p className="text-sm text-navy/70">Professional AI avatars delivered in 3-5 days</p>
+          <div className="rounded-3xl bg-green p-6 text-white shadow-sm">
+            <h3 className="font-serif text-xl">Professional Snapshot</h3>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li><strong>Brand:</strong> Affirm Beauty Artistry</li><li><strong>Focus:</strong> Natural Hair, Texture Education, Beauty Storytelling</li><li><strong>Training:</strong> Avalon School of Cosmetology Graduate</li><li><strong>Completed:</strong> 1,600 Cosmetology Hours</li><li><strong>Current Path:</strong> Pursuing Natural Hair Licensure</li><li><strong>Platforms:</strong> Instagram, TikTok, Pinterest</li>
+            </ul>
           </div>
-          <button
-            type="button"
-            onClick={() => onOrder("basic")}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:bg-navy/90"
-          >
-            Start with Basic Package
-            <ArrowUpRight className="h-4 w-4" />
-          </button>
-        </div>
-      </section>
+        </section>
 
-      <footer className="border-t border-navy/5 bg-cream py-10 text-center text-sm text-navy/60">
-        <p>© {new Date().getFullYear()} Admiral Studio. Purpose-built for energy innovators.</p>
-        <div className="mt-2 space-x-4">
-          <Link href="/privacy" className="text-navy/60 underline-offset-4 hover:text-navy hover:underline">
-            Privacy
-          </Link>
-          <Link href="/contact" className="text-navy/60 underline-offset-4 hover:text-navy hover:underline">
-            Contact
-          </Link>
-        </div>
+        <section className="space-y-4">
+          <h2 className="font-serif text-2xl">Educate. Equip. Empower.</h2>
+          <div className="grid gap-4 md:grid-cols-3">{[["Educate","Beginner-friendly natural hair notes, texture conversations, and honest lessons from Leigh’s ongoing learning journey."],["Equip","Practical content ideas, filming prompts, and portfolio support for beauty students, new stylists, and natural hair creatives."],["Empower","A creative space that affirms natural hair as beauty, artistry, identity, and self-expression."]].map(([title,copy]) => <article key={title} className="rounded-3xl bg-white p-5 shadow-sm"><h3 className="font-serif text-xl text-green">{title}</h3><p className="mt-2 text-sm text-black/75">{copy}</p></article>)}</div>
+        </section>
+
+        <section id="portfolio" className="space-y-4">
+          <h2 className="font-serif text-2xl">Creative Portfolio</h2>
+          <p className="text-black/75">A growing archive of natural hair looks, editorial visuals, and beauty storytelling.</p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{portfolioItems.map((item) => <article key={item.title} className="rounded-3xl bg-white p-4 shadow-sm"><div className="mb-3 grid h-36 place-items-center rounded-2xl border border-dashed border-gold/40 bg-pink/10 text-sm text-black/60">Placeholder Visual</div><h3 className="font-serif text-lg">{item.title}</h3><p className="mt-1 text-sm text-black/70">{item.description}</p><div className="mt-3 flex flex-wrap gap-2">{item.tags.map((t)=><span key={t} className="rounded-full bg-gold/15 px-2 py-1 text-xs">{t}</span>)}</div></article>)}</div>
+        </section>
+
+        <section id="support" className="rounded-3xl bg-white p-6 shadow-sm">
+          <h2 className="font-serif text-2xl">Student Portfolio Support</h2>
+          <p className="mt-2 text-black/75">For beauty students, new stylists, braiders, and natural hair creatives who want their work to look cleaner online without hiring a full marketing agency.</p>
+          <div className="mt-5 rounded-3xl border border-green/15 bg-cream p-5">
+            <p className="text-sm uppercase tracking-wide text-green">Student Portfolio Clip</p><p className="font-serif text-3xl">$25 Intro Spots</p>
+            <p className="mt-2 text-sm text-black/80">Turn raw practice, school, or client-approved footage into one clean vertical portfolio clip you can post on your own page.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-4 md:grid-cols-2">
+          <article className="rounded-3xl bg-white p-5 shadow-sm"><h3 className="font-serif text-xl">How It Works</h3><ol className="mt-3 list-decimal space-y-2 pl-5 text-sm"><li>Send your raw clips</li><li>Leigh reviews the footage and confirms direction</li><li>Your clean vertical portfolio clip is created</li><li>You receive the clip, cover/title frame, and caption starter</li></ol><p className="mt-3 text-xs text-black/65">Typical turnaround goal: 2–4 business days depending on availability.</p></article>
+          <article className="rounded-3xl bg-white p-5 shadow-sm"><h3 className="font-serif text-xl">Who This Is For</h3><ul className="mt-3 space-y-2 text-sm"><li><strong>Beauty Students:</strong> You are learning the craft and need a cleaner way to document your practice work.</li><li><strong>New Stylists:</strong> You have work to show, but your page needs clearer clips, captions, and presentation.</li><li><strong>Braiders &amp; Natural Hair Creatives:</strong> You want your styles, parts, texture work, and finished looks to feel more polished online.</li><li><strong>Small Beauty Pages:</strong> You are not ready for a full brand buildout, but you want your content to look more intentional.</li></ul></article>
+        </section>
+
+        <section id="contact" className="rounded-3xl bg-white p-6 shadow-sm">
+          <h2 className="font-serif text-2xl">Request a Student Portfolio Clip</h2>
+          <form name="portfolio-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you" className="mt-5 grid gap-3 sm:grid-cols-2">
+            <input type="hidden" name="form-name" value="portfolio-inquiry" />
+            <p className="hidden"><label>Don&apos;t fill this out: <input name="bot-field" /></label></p>
+            <input name="name" required placeholder="Name" className="rounded-xl border border-black/15 px-3 py-2" />
+            <input type="email" name="email" required placeholder="Email" className="rounded-xl border border-black/15 px-3 py-2" />
+            <input name="handle" placeholder="Instagram or TikTok handle" className="rounded-xl border border-black/15 px-3 py-2" />
+            <select name="role" required className="rounded-xl border border-black/15 px-3 py-2"><option value="">Select role</option><option>Beauty Student</option><option>New Stylist</option><option>Braider / Natural Hair Creative</option><option>Small Beauty Creator</option><option>Other</option></select>
+            <input name="clip_type" placeholder="What kind of clip do you need?" className="rounded-xl border border-black/15 px-3 py-2 sm:col-span-2" />
+            <label className="sm:col-span-2 text-sm"><input type="checkbox" name="permission" required className="mr-2"/>Do you have permission to use the footage/client content?</label>
+            <textarea name="message" placeholder="Message" rows={4} className="rounded-xl border border-black/15 px-3 py-2 sm:col-span-2" />
+            <select name="preferred_contact" className="rounded-xl border border-black/15 px-3 py-2 sm:col-span-2"><option>Email</option><option>Instagram DM</option><option>TikTok DM</option></select>
+            <button type="submit" className="rounded-full bg-green px-5 py-3 text-sm font-semibold text-white sm:col-span-2">Send Inquiry</button>
+          </form>
+        </section>
+
+        <section className="rounded-3xl border border-gold/50 bg-gold/10 p-5 text-sm"><h3 className="font-serif text-xl text-black">Credential Note</h3><p className="mt-2">Leigh is a cosmetology school graduate and natural hair creative. She is not currently licensed and does not provide licensed cosmetology instruction, medical/scalp diagnosis, or regulated professional services through this page. Portfolio support is focused on creative documentation, content editing, and beginner-friendly peer-to-peer support.</p></section>
+      </main>
+
+      <footer className="border-t border-black/10 px-4 py-8 text-center text-sm">
+        <p className="font-serif text-lg">Affirm Beauty Artistry</p>
+        <p>Educate. Equip. Empower.</p>
+        <p className="mt-2"><Link href="#">Instagram: @affirmbeautyartistry</Link> · <Link href="#">TikTok: @affirmbeautyartistry</Link> · <Link href="#">Pinterest: @affirmbeautyartistry</Link></p>
       </footer>
-
-{/* Removed proposal modal for simplicity
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/60 backdrop-blur">
-          <div className="relative w-full max-w-lg rounded-[32px] border border-navy/10 bg-white p-8 shadow-2xl">
-            <button
-              type="button"
-              onClick={() => setProposalOpen(false)}
-              className="absolute right-4 top-4 text-sm font-semibold text-navy/60 hover:text-navy"
-            >
-              Close
-            </button>
-            <h2 className="text-2xl font-semibold text-navy">Request a proposal</h2>
-            <p className="mt-2 text-sm text-navy/70">
-              Tell us about your objectives and we’ll confirm fit within one business day.
-            </p>
-            <form
-              name="proposal"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              onSubmit={() => track("proposal_form_submit")}
-              className="mt-6 space-y-4"
-            >
-              <input type="hidden" name="form-name" value="proposal" />
-              <input type="text" name="name" placeholder="Your name" required className="w-full rounded-2xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy focus:border-neon focus:outline-none focus:ring-2 focus:ring-neon/40" />
-              <input type="email" name="email" placeholder="Email" required className="w-full rounded-2xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy focus:border-neon focus:outline-none focus:ring-2 focus:ring-neon/40" />
-              <select name="use_case" className="w-full rounded-2xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy focus:border-neon focus:outline-none focus:ring-2 focus:ring-neon/40">
-                <option>Influencer persona</option>
-                <option>UGC kit</option>
-                <option>Ad creative pack</option>
-              </select>
-              <select name="timeline" className="w-full rounded-2xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy focus:border-neon focus:outline-none focus:ring-2 focus:ring-neon/40">
-                <option>ASAP</option>
-                <option>This week</option>
-                <option>Later</option>
-              </select>
-              <textarea
-                name="message"
-                placeholder="What are you trying to achieve?"
-                className="w-full rounded-2xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy focus:border-neon focus:outline-none focus:ring-2 focus:ring-neon/40"
-              />
-              <input type="text" name="bot-field" className="hidden" />
-              <button type="submit" className="w-full rounded-full bg-neon px-5 py-3 text-sm font-semibold text-navy shadow-glow transition hover:-translate-y-0.5">
-                Request Proposal
-              </button>
-            </form>
-          </div>
-        </div>
-*/}
     </div>
   );
 }
