@@ -2,9 +2,17 @@ export const siteConfig = {
   name: "Studio Admiral",
   shortPositioning: "Independent expertise. Shared strategy when it matters.",
   description:
-    "Explore David and Leigh's Studio Admiral portfolios, then contact the right founder for marketing, websites, short-form content, contract work, or collaboration.",
+    "Studio Admiral is a founder-led marketing partnership helping brands grow through strategy, websites, storytelling, creative direction, automation, and analytics.",
   url: "https://studio.admiralenergy.ai",
   email: "studio@admiralenergy.ai",
+  seo: {
+    title: "Studio Admiral | Founder-Led Marketing Partnership",
+    openGraphTitle: "Studio Admiral | Two Perspectives. One Growth Partnership.",
+    openGraphDescription:
+      "Strategy, storytelling, conversion, creative direction, websites, automation, content, and analytics, led by David and Leigh Edwards.",
+    socialImage: "/brand/og-default.png",
+    socialImageAlt: "Studio Admiral founder-led marketing partnership",
+  },
   brand: {
     logo: "/brand-assets/studio-admiral/logos/logo-horizontal-reversed.svg" as string | null,
     mark: "/brand-assets/studio-admiral/logos/mark-full-color.svg" as string | null,

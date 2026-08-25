@@ -28,10 +28,11 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
       type: "article",
+      siteName: siteConfig.name,
       title: `${title} | Studio Admiral`,
       description,
       url: `/work/${project.slug}`,
-      images: image ? [{ url: image, alt: `${project.name} website homepage` }] : [],
+      images: image ? [{ url: image, alt: `${project.name} project preview` }] : [],
     },
     twitter: {
       card: image ? "summary_large_image" : "summary",

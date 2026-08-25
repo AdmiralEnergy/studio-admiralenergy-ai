@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
@@ -6,14 +5,15 @@ import { JsonLd } from "@/components/JsonLd";
 import { MarketingBaseline } from "@/components/MarketingBaseline";
 import { marketingProof, partnershipServices } from "@/data/partnership";
 import { siteConfig } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Marketing Services & Small Business Baseline",
-  description: "Explore David-led, Leigh-led, and collaborative marketing services, plus a bounded one-time Small Business Marketing Baseline from $50–$100.",
-  alternates: { canonical: "/growth" },
-  openGraph: { title: "Marketing Services & Baseline | Studio Admiral", description: "Websites, storytelling, creative direction, content, automation, analytics, and a one-time $50–$100 marketing foundation.", url: "/growth" },
-  twitter: { title: "Marketing Services & Baseline | Studio Admiral", description: "Practical founder-led services and a one-time $50–$100 small-business starter offer." },
-};
+export const metadata = createPageMetadata({
+  title: "Marketing, Websites & Creative Services",
+  description: "Explore Studio Admiral services across websites, strategy, storytelling, creative direction, automation, analytics, content, and practical growth support.",
+  path: "/growth",
+  openGraphTitle: "Marketing, Websites & Creative Services | Studio Admiral",
+  openGraphDescription: "Founder-led strategy, storytelling, conversion, creative direction, automation, content, analytics, and a practical Small Business Marketing Baseline.",
+});
 
 export default function GrowthPage() {
   const schema = partnershipServices.map((service) => ({ "@context": "https://schema.org", "@type": "Service", name: service.title, provider: { "@id": `${siteConfig.url}/#organization` }, url: `${siteConfig.url}/growth` }));

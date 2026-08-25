@@ -1,17 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { FounderGateway } from "@/components/FounderGateway";
 import { SectionHeading } from "@/components/SectionHeading";
 import { collaborationSteps, partnershipModes } from "@/data/partnership";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "David & Leigh | The Studio Admiral Partnership",
+export const metadata = createPageMetadata({
+  title: "David & Leigh",
   description: "Meet David and Leigh, two equal Studio Admiral partners combining strategy, conversion, storytelling, creative direction, content, and practical business experience.",
-  alternates: { canonical: "/about" },
-  openGraph: { title: "David & Leigh | Studio Admiral", description: "Independent expertise. Shared strategy when it matters.", url: "/about" },
-  twitter: { title: "David & Leigh | Studio Admiral", description: "Independent expertise. Shared strategy when it matters." },
-};
+  path: "/about",
+  openGraphTitle: "David & Leigh | Studio Admiral",
+  openGraphDescription: "Meet the two founders behind Studio Admiral: David leads strategy and conversion, while Leigh leads storytelling and creative direction.",
+});
 
 export default function AboutPage() {
   return (

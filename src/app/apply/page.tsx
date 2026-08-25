@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ApplicationForm } from "@/components/ApplicationForm";
 import { siteConfig } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Apply for a Small Business Website",
+export const metadata = createPageMetadata({
+  title: "Apply for the Free Website Program",
   description: "Tell Studio Admiral about your small business and apply for a professional website with no upfront design fee, subject to fit, scope, and capacity.",
-  alternates: { canonical: "/apply" },
-  openGraph: { title: "Apply for a Website | Studio Admiral", description: "Tell us about the business, what is missing, and what a useful website needs to accomplish.", url: "/apply" },
-  twitter: { title: "Apply for a Website | Studio Admiral", description: "Tell us about the business, what is missing, and what a useful website needs to accomplish." },
-};
+  path: "/apply",
+  openGraphTitle: "Apply for the Free Website Program | Studio Admiral",
+  openGraphDescription: "Tell us about your business, what is missing online, and what a useful website should help someone do.",
+});
 
 export default function ApplyPage() {
   return (

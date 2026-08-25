@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = { title: "Thank You", description: "Your message has been received by Studio Admiral.", robots: { index: false, follow: false } };
+export const metadata = createPageMetadata({ title: "Thank You", description: "Your message has been received by Studio Admiral.", path: "/thank-you", robots: { index: false, follow: false } });
 
 export default async function ThankYouPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const { type } = await searchParams;

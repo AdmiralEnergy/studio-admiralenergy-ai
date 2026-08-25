@@ -4,40 +4,47 @@ import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
+import { founders, partnershipServices } from "@/data/partnership";
 import { siteConfig } from "@/data/site";
+import { defaultSocialImage } from "@/lib/metadata";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Studio Admiral | Portfolios, Marketing & Short-Form Content",
+    default: siteConfig.seo.title,
     template: "%s | Studio Admiral",
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  authors: [{ name: "David Edwards" }, { name: "Leigh Edwards" }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   manifest: "/manifest.webmanifest",
   keywords: [
     "founder-led marketing partnership",
-    "portfolio website design",
-    "small business marketing baseline",
-    "short-form content creators",
     "conversion-focused websites",
     "brand strategy and storytelling",
+    "creative direction",
+    "marketing automation",
+    "analytics and optimization",
+    "small business marketing baseline",
+    "audience-building content",
   ],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "Studio Admiral | Portfolios, Marketing & Short-Form Content",
-    description: siteConfig.description,
-    images: [{ url: "/brand/og-default.png", width: 1200, height: 630, alt: "Studio Admiral, Websites & Growth for Small Businesses" }],
+    title: siteConfig.seo.openGraphTitle,
+    description: siteConfig.seo.openGraphDescription,
+    images: [defaultSocialImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Studio Admiral | Portfolios, Marketing & Short-Form Content",
-    description: siteConfig.description,
-    images: ["/brand/og-default.png"],
+    title: siteConfig.seo.openGraphTitle,
+    description: siteConfig.seo.openGraphDescription,
+    images: [siteConfig.seo.socialImage],
   },
   icons: {
     icon: [
@@ -66,7 +73,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         email: ["davide@admiralenergy.ai", "leighnicoleedwards97@gmail.com"],
         description: siteConfig.description,
         areaServed: "United States",
-        serviceType: ["Conversion-focused websites", "Brand strategy", "Visual storytelling", "Short-form content", "Lead generation", "Marketing systems"],
+        logo: new URL(siteConfig.brand.mark ?? "/brand/mark.svg", siteConfig.url).toString(),
+        image: new URL(siteConfig.seo.socialImage, siteConfig.url).toString(),
+        founder: founders.map((founder) => ({ "@id": `${siteConfig.url}/#${founder.id}-edwards` })),
+        serviceType: [
+          ...partnershipServices.map((service) => service.title),
+          "Small Business Marketing Baseline",
+          "Free Website Program",
+        ],
       },
       {
         "@type": "WebSite",
@@ -74,7 +88,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         url: siteConfig.url,
         name: siteConfig.name,
         publisher: { "@id": `${siteConfig.url}/#organization` },
+        inLanguage: "en-US",
       },
+      ...founders.map((founder) => ({
+        "@type": "Person",
+        "@id": `${siteConfig.url}/#${founder.id}-edwards`,
+        name: `${founder.name} Edwards`,
+        givenName: founder.name,
+        familyName: "Edwards",
+        description: founder.biography,
+        image: new URL(founder.portrait, siteConfig.url).toString(),
+        url: `${siteConfig.url}/about#founder-profile-${founder.id}`,
+        jobTitle: founder.id === "david" ? "Co-founder and strategist" : "Co-founder and visual storyteller",
+        worksFor: { "@id": `${siteConfig.url}/#organization` },
+      })),
     ],
   };
 

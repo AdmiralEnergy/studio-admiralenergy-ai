@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { FAQ } from "@/components/FAQ";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { faqs, processSteps, siteConfig, websiteTypes } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Professional Small Business Websites",
-  description: "Professional lead-generation and business-presence websites for qualifying small businesses with no upfront design fee.",
-  alternates: { canonical: "/websites" },
-  openGraph: { title: "Professional Small Business Websites | Studio Admiral", description: "A practical website program for qualifying small businesses, built around fit, scope, and a clear business goal.", url: "/websites" },
-  twitter: { title: "Professional Small Business Websites | Studio Admiral", description: "A practical website program for qualifying small businesses, built around fit, scope, and a clear business goal." },
-};
+export const metadata = createPageMetadata({
+  title: "Free Website Program",
+  description: "Studio Admiral builds professional lead-generation and business-presence websites for qualifying small businesses with no upfront design fee.",
+  path: "/websites",
+  openGraphTitle: "Free Website Program | Studio Admiral",
+  openGraphDescription: "A separate website program for qualifying small businesses, built around fit, scope, and a clear business goal.",
+});
 
 export default function WebsitesPage() {
   const schema = {

@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { PortfolioExplorer } from "@/components/PortfolioExplorer";
 import { projects } from "@/data/projects";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Selected Work",
-  description: "Explore David-led, Leigh-led, and collaborative Studio Admiral work across websites, strategy, storytelling, branding, content, and AI.",
-  alternates: { canonical: "/work" },
-  openGraph: { title: "Selected Work | Studio Admiral", description: "A transparent look at real community, in-house, family, and product projects.", url: "/work" },
-  twitter: { title: "Selected Work | Studio Admiral", description: "A transparent look at real community, in-house, family, and product projects." },
-};
+export const metadata = createPageMetadata({
+  title: "Our Work",
+  description: "Explore David-led, Leigh-led, and collaborative Studio Admiral projects across websites, strategy, storytelling, branding, content, and AI-assisted execution.",
+  path: "/work",
+  openGraphTitle: "Our Work | Studio Admiral",
+  openGraphDescription: "See how Studio Admiral brings strategy, storytelling, conversion, and creative direction into real business and community projects.",
+});
 
 export default function WorkPage() {
   return (

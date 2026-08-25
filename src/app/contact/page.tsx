@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { PartnerContactForm, type InquiryPurpose, type PartnerChoice } from "@/components/PartnerContactForm";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Contact David, Leigh, or Both",
+export const metadata = createPageMetadata({
+  title: "Start a Project",
   description: "Contact Studio Admiral about paid projects, the Small Business Marketing Baseline, jobs and contracts, collaborations, or general inquiries.",
-  alternates: { canonical: "/contact" },
-  openGraph: { title: "Contact David, Leigh, or Both | Studio Admiral", description: "Choose an inquiry purpose and the Studio Admiral partner you want to reach.", url: "/contact" },
-  twitter: { title: "Contact David, Leigh, or Both | Studio Admiral", description: "Paid projects, marketing baseline, jobs, contracts, collaborations, and general inquiries." },
-};
+  path: "/contact",
+  openGraphTitle: "Start a Project | Studio Admiral",
+  openGraphDescription: "Choose David, Leigh, or both for a paid project, job or contract opportunity, collaboration, or practical marketing support.",
+});
 
 const purposes = new Set<InquiryPurpose>(["paid-project", "marketing-baseline", "job-contract", "collaboration", "general"]);
 const partners = new Set<PartnerChoice>(["david", "leigh", "both"]);

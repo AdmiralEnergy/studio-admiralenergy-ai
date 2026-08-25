@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = { title: "Privacy", description: "How Studio Admiral handles website inquiry and application information.", alternates: { canonical: "/privacy" }, robots: { index: true, follow: true } };
+export const metadata = createPageMetadata({ title: "Privacy", description: "How Studio Admiral handles website inquiry and application information.", path: "/privacy", robots: { index: true, follow: true } });
 
 export default function PrivacyPage() {
   return (
