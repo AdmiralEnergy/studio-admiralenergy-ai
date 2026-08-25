@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: "Studio Admiral | Portfolios, Marketing & Short-Form Content",
     description: siteConfig.description,
-    images: [{ url: "/brand/og-default.png", width: 1200, height: 630, alt: "Studio Admiral — Websites & Growth for Small Businesses" }],
+    images: [{ url: "/brand/og-default.png", width: 1200, height: 630, alt: "Studio Admiral, Websites & Growth for Small Businesses" }],
   },
   twitter: {
     card: "summary_large_image",

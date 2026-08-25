@@ -40,7 +40,7 @@ export const founders: Founder[] = [
       name: "Admiral Energy",
       label: "David's highlighted business",
       description: "Strategy, resilience, sales, and complex-solution communication.",
-      image: "/images/work/admiral-energy.png",
+      image: "/images/work/admiral-energy-hd.jpg",
       href: "/work/admiral-energy",
     },
   },
@@ -112,7 +112,7 @@ export const marketingProof = [
 
 export const collaborationSteps = [
   "Tell us what you are building.",
-  "Choose a founder—or ask us to recommend one.",
+  "Choose a founder, or ask us to recommend one.",
   "Your lead partner owns the project.",
   "The second partner joins when their expertise adds value.",
   "You receive one coherent outcome, not disconnected work.",

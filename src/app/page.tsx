@@ -15,7 +15,7 @@ export default function HomePage() {
         <div className="partnership-hero-copy">
           <p className="eyebrow"><span /> Studio Admiral · Marketing partnership</p>
           <h1>Two perspectives. <em>One growth partnership.</em></h1>
-          <p className="hero-lede">Independent expertise in strategy, storytelling, conversion, and creative direction—combined whenever the work benefits from both.</p>
+          <p className="hero-lede">Independent expertise in strategy, storytelling, conversion, and creative direction. Choose one founder, or bring both into the project when you need a wider mix of skills.</p>
           <div className="hero-actions">
             <Link className="button" href="/#partners">Find Your Partner <span aria-hidden="true">↓</span></Link>
             <Link className="text-link" href="/work">Explore Our Work <span aria-hidden="true">→</span></Link>
@@ -44,7 +44,7 @@ export default function HomePage() {
       </div>
 
       <section className="section partnership-model">
-        <SectionHeading eyebrow="How the partnership works" title={<>Choose the specialist—or <em>bring both to the table.</em></>} description="Each founder can own a project independently. When the work crosses disciplines, the second founder joins where their expertise adds value." />
+        <SectionHeading eyebrow="How the partnership works" title={<>Choose the specialist, or <em>bring both to the table.</em></>} description="Each founder can own a project independently. When the work crosses disciplines, the second founder joins where their expertise adds value." />
         <div className="partnership-mode-grid">
           {partnershipModes.map((mode, index) => <article data-mode={mode.id} key={mode.id}><span>0{index + 1}</span><p>{mode.label}</p><h3>{mode.title}</h3><p>{mode.description}</p></article>)}
         </div>
@@ -57,12 +57,12 @@ export default function HomePage() {
       </section>
 
       <section className="section selected-work-section" id="work">
-        <div className="section-heading-row"><SectionHeading eyebrow="Featured portfolio" title={<>See the thinking <em>inside the work.</em></>} description="Every project identifies its lead, demonstrated capabilities, actual deliverables, and verified outcomes—without invented metrics." /><Link className="text-link" href="/work">Filter all projects <span aria-hidden="true">→</span></Link></div>
+        <div className="section-heading-row"><SectionHeading eyebrow="Featured portfolio" title={<>See the thinking <em>inside the work.</em></>} description="Every project identifies its lead, demonstrated capabilities, actual deliverables, and verified outcomes without invented metrics." /><Link className="text-link" href="/work">Filter all projects <span aria-hidden="true">→</span></Link></div>
         <ProjectGrid projects={featuredProjects} prioritizeFirst />
       </section>
 
       <section className="section businesses-section">
-        <SectionHeading eyebrow="The businesses behind the partnership" title={<>Operators first. <em>Marketers in practice.</em></>} description="Each founder actively builds independent ventures, giving Studio Admiral practical operating experience—not purely theoretical marketing knowledge." />
+        <SectionHeading eyebrow="The businesses behind the partnership" title={<>Operators first. <em>Marketers in practice.</em></>} description="Each founder actively builds independent ventures, giving Studio Admiral practical operating experience, not purely theoretical marketing knowledge." />
         <div className="business-grid">
           {founders.map((founder) => (
             <article className={`business-card business-card-${founder.id}`} key={founder.id}>
@@ -89,7 +89,7 @@ export default function HomePage() {
       <section className="section baseline-section"><MarketingBaseline /></section>
 
       <section className="section collaboration-process">
-        <SectionHeading eyebrow="One clear owner" title={<>Collaboration without <em>confusion.</em></>} description="Two founders should add range—not extra layers. The lead partner remains accountable from the first conversation to the final handoff." />
+        <SectionHeading eyebrow="One clear owner" title={<>Collaboration without <em>confusion.</em></>} description="Two founders should add range, not extra layers. The lead partner remains accountable from the first conversation to the final handoff." />
         <ol>{collaborationSteps.map((step, index) => <li key={step}><span>0{index + 1}</span><p>{step}</p></li>)}</ol>
       </section>
 

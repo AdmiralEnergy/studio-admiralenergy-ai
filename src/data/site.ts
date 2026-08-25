@@ -14,7 +14,7 @@ export const siteConfig = {
   founderImage: null as string | null,
   offer: {
     label: "Website Program",
-    headline: "Professional websites for qualifying small businesses — no upfront design fee.",
+    headline: "Professional websites for qualifying small businesses, with no upfront design fee.",
     qualification:
       "Website projects are selected based on fit, scope, available capacity, and whether we can build something genuinely useful for the business.",
     revisionPolicy: "One reasonable revision phase",

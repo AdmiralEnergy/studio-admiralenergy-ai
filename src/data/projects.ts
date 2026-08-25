@@ -13,6 +13,7 @@ export type Project = {
   shortDescription: string;
   image: string;
   visualStyle: "browser" | "editorial";
+  visualFit?: "cover" | "contain";
   liveUrl: string | null;
   status: "live" | "private" | "in development";
   relationshipType: string;
@@ -37,7 +38,7 @@ export const projects: Project[] = [
     industry: "Energy resilience",
     shortDescription: "Product marketing, local services, education, and lead generation in one business platform.",
     description: "A substantial in-house platform that connects portable power products, whole-home backup services, practical educational content, and local lead generation.",
-    image: "/images/work/admiral-energy.png",
+    image: "/images/work/admiral-energy-hd.jpg",
     visualStyle: "browser",
     liveUrl: "https://admiralenergy.ai/",
     status: "live",
@@ -49,7 +50,7 @@ export const projects: Project[] = [
     deliverables: ["Multi-path website architecture", "Product and service positioning", "Lead-capture journeys", "Educational content system"],
     outcomes: ["A single platform for product discovery and local service inquiries", "Clearer paths for different levels of energy-resilience need", "A foundation for long-term content and search visibility"],
     featured: true,
-    challenge: "The business serves people at very different levels of need—from everyday portable power to professionally installed whole-home resilience—without making the decision feel overwhelming.",
+    challenge: "The business serves people at very different levels of need, from everyday portable power to professionally installed whole-home resilience, without making the decision feel overwhelming.",
     approach: "Create a layered architecture that begins with the smallest practical next step, distinguishes product and service paths, and supports both immediate purchases and higher-consideration assessments with educational content behind them.",
     outcome: "Created to support product discovery, local service inquiries, education, and long-term search visibility within one coherent business ecosystem.",
     accent: "gold",
@@ -87,6 +88,7 @@ export const projects: Project[] = [
     description: "The Studio Admiral partnership platform brings David and Leigh's independent strengths, shared services, portfolios, and practical entry offers into one coherent client journey.",
     image: "/brand-assets/studio-admiral/campaign/more-than-marketing.webp",
     visualStyle: "editorial",
+    visualFit: "contain",
     liveUrl: null,
     status: "live",
     relationshipType: "Studio-owned platform",
@@ -98,7 +100,7 @@ export const projects: Project[] = [
     outcomes: ["Independent founder expertise presented without hierarchy", "Clear routes into services, work, and direct contact", "A coherent visual system spanning both founder perspectives"],
     featured: true,
     challenge: "The studio needed to present two equal but different partners without flattening their strengths or making collaboration feel complicated.",
-    approach: "Build around an explicit three-mode model—David-led, Leigh-led, or collaborative—then repeat that language through founder profiles, work, services, and contact routing.",
+    approach: "Build around an explicit three-mode model: David-led, Leigh-led, or collaborative. Then repeat that language through founder profiles, work, services, and contact routing.",
     outcome: "A partnership-first experience designed to help a visitor understand the fit, inspect relevant proof, and start with the right founder.",
     accent: "gold",
   },
@@ -109,7 +111,7 @@ export const projects: Project[] = [
     industry: "Community fitness / martial arts",
     shortDescription: "A high-energy local website that makes the first-class decision feel simple.",
     description: "A community fitness and martial arts website organized around the questions a first-time student actually asks: what training is like, when classes happen, what it costs, and how to start.",
-    image: "/images/work/kings-mountain-muay-thai.png",
+    image: "/images/work/kings-mountain-muay-thai-hd.jpg",
     visualStyle: "browser",
     liveUrl: "https://km-muay-thai-demo.netlify.app/",
     status: "live",
@@ -162,4 +164,9 @@ export function projectLeadLabel(lead: ProjectLead) {
   if (lead === "david") return "David-led";
   if (lead === "leigh") return "Leigh-led";
   return "Collaborative";
+}
+
+export function projectStatusLabel(status: Project["status"]) {
+  if (status === "in development") return "In development";
+  return status[0].toUpperCase() + status.slice(1);
 }

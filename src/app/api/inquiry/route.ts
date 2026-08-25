@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
   const from = process.env.CONTACT_FROM_EMAIL;
   if (!apiKey || !from) return NextResponse.json({ error: "Email delivery is not configured yet. Please use David or Leigh’s direct email link on this page." }, { status: 503 });
 
-  const subject = `[Studio Admiral] ${purposeLabels[purpose]} — ${partnerLabels[partner]} — ${data.company}`;
+  const subject = `[Studio Admiral] ${purposeLabels[purpose]} | ${partnerLabels[partner]} | ${data.company}`;
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "User-Agent": "studio-admiral-site/1.0", "Idempotency-Key": crypto.randomUUID() },

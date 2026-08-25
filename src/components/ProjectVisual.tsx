@@ -8,7 +8,7 @@ export function ProjectVisual({ project, priority = false }: { project: Project;
   }
 
   return (
-    <div className="project-editorial">
+    <div className={`project-editorial project-editorial-${project.visualFit ?? "cover"}`}>
       <Image
         src={project.image}
         alt={`${project.name} brand and campaign artwork`}

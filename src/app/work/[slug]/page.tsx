@@ -5,7 +5,7 @@ import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/JsonLd";
 import { PortfolioViewTracker } from "@/components/PortfolioViewTracker";
 import { ProjectVisual } from "@/components/ProjectVisual";
-import { getProject, projectLeadLabel, projects } from "@/data/projects";
+import { getProject, projectLeadLabel, projectStatusLabel, projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
@@ -62,7 +62,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <PortfolioViewTracker project={project.slug} />
       <section className="page-hero case-hero">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/work">Work</Link><span>/</span><span>{project.name}</span></nav>
-        <div className="case-hero-topline"><span>{project.relationshipType}</span><span>{project.status}</span></div>
+        <div className="case-hero-topline"><span>{project.relationshipType}</span><span>{projectStatusLabel(project.status)}</span></div>
         <h1>{project.name}</h1>
         <div className="case-summary">
           <p>{project.description}</p>
@@ -70,7 +70,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <div><dt>Project type</dt><dd>{project.projectType}</dd></div>
             <div><dt>Industry</dt><dd>{project.industry}</dd></div>
             <div><dt>Lead</dt><dd>{projectLeadLabel(project.lead)}</dd></div>
-            <div><dt>Status</dt><dd>{project.status}</dd></div>
+            <div><dt>Status</dt><dd>{projectStatusLabel(project.status)}</dd></div>
           </dl>
         </div>
       </section>

@@ -198,7 +198,7 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 .project-card a:hover .browser-mockup { box-shadow: 0 36px 80px rgba(16,19,15,.23); transform: translateY(-8px) rotate(-.5deg); }
 .project-card-copy { padding: 1.2rem .2rem 0; }
 .project-card-topline { display: flex; justify-content: space-between; }
-.project-card-topline span:last-child { color: var(--signal); }
+.project-card-topline span:last-child { color: var(--signal); text-transform: none; }
 .project-card h3 { font-size: clamp(2rem, 3.2vw, 3.5rem); letter-spacing: -.06em; line-height: .98; margin: 1.2rem 0 .75rem; }
 .project-card p { color: rgba(16,19,15,.7); line-height: 1.6; margin: 0; max-width: 600px; }
 .project-card-link { align-items: center; display: flex; font-weight: 750; gap: .5rem; margin-top: 1.4rem; }
@@ -283,7 +283,7 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 .scope-list { border-top: 1px solid var(--ink); list-style: none; margin: 0; padding: 0; }
 .scope-list li { align-items: center; border-bottom: 1px solid var(--line); display: grid; gap: 1rem; grid-template-columns: 25px 1fr; min-height: 64px; }
 .scope-list li::before { color: var(--signal); content: "✓"; font-weight: 900; }
-.scope-list.exclusion-list li::before { color: rgba(16,19,15,.4); content: "—"; }
+.scope-list.exclusion-list li::before { color: rgba(16,19,15,.4); content: "×"; }
 .notice-card { background: var(--acid); border-radius: 16px; padding: clamp(1.4rem, 3vw, 2.6rem); }
 .notice-card h3 { font-size: clamp(1.5rem, 2.4vw, 2.5rem); letter-spacing: -.05em; margin: 0 0 1rem; }
 .notice-card p { line-height: 1.65; margin: 0; }
@@ -318,7 +318,7 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 
 .case-hero { padding-bottom: clamp(3rem, 5vw, 5rem); }
 .case-hero-topline { display: flex; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; gap: 1rem; justify-content: space-between; letter-spacing: .06em; margin-bottom: 2rem; text-transform: uppercase; }
-.case-hero-topline span:last-child { color: var(--signal); }
+.case-hero-topline span:last-child { color: var(--signal); text-transform: none; }
 .case-hero h1 { font-size: clamp(3.8rem, 8vw, 8.8rem); }
 .case-summary { display: grid; gap: 2rem; grid-template-columns: 1fr 1fr; margin-top: 2.5rem; }
 .case-summary > p { font-size: clamp(1.05rem, 1.6vw, 1.4rem); line-height: 1.6; margin: 0; }
@@ -390,7 +390,9 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 .founder-profile { display: grid; grid-template-columns: .82fr 1.18fr; min-height: 650px; }
 .founder-profile[hidden] { display: none; }
 .founder-profile-art { min-height: 650px; position: relative; }
-.founder-profile-art img { object-fit: cover; object-position: top center; }
+.founder-profile-art img { object-fit: contain; object-position: center; }
+.founder-profile-david .founder-profile-art { background: var(--david-background); }
+.founder-profile-leigh .founder-profile-art { background: var(--leigh-surface); }
 .founder-profile-copy { align-content: center; display: grid; padding: clamp(2rem, 5vw, 5.5rem); }
 .founder-profile-copy h3 { font-family: Cinzel, Georgia, serif; font-size: clamp(4rem, 7vw, 7.5rem); font-weight: 500; letter-spacing: -.065em; line-height: .8; margin: 0 0 2rem; }
 .founder-biography { font-family: Georgia, serif; font-size: clamp(1.12rem, 1.75vw, 1.5rem); line-height: 1.55; margin: 0 0 2rem; max-width: 720px; }
@@ -405,6 +407,8 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 
 .project-editorial { aspect-ratio: 1.74 / 1; background: var(--paper-dark); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; position: relative; }
 .project-editorial img { object-fit: cover; object-position: center; }
+.project-editorial-contain { aspect-ratio: 9 / 14; background: var(--brand-navy); }
+.project-editorial-contain img { object-fit: contain; }
 .project-card-visual-link { display: block; }
 .project-card .project-editorial { transition: transform .35s ease, box-shadow .35s ease; }
 .project-card-visual-link:hover .project-editorial { box-shadow: 0 36px 80px rgba(16,19,15,.23); transform: translateY(-8px) rotate(-.5deg); }
@@ -480,6 +484,7 @@ h1 em, h2 em { color: var(--brand-gold); display: block; font-family: Cinzel, Ge
 .free-website-band > div > p:last-child { color: color-mix(in srgb, var(--brand-ivory) 72%, transparent); line-height: 1.65; margin-bottom: 0; max-width: 750px; }
 
 .case-visual .project-editorial { aspect-ratio: 16 / 8; border-radius: 16px; }
+.case-visual .project-editorial-contain { aspect-ratio: 9 / 14; margin-inline: auto; max-width: 900px; }
 .case-lead-label { border-left: 3px solid var(--brand-gold); font-weight: 800; margin: 0 0 2rem; padding-left: .8rem; }
 .case-inquiry-link { display: inline-flex; margin-top: 1.5rem; }
 .case-list { color: color-mix(in srgb, var(--ink) 70%, transparent); line-height: 1.75; margin: 1.2rem 0 0; padding-left: 1.15rem; }

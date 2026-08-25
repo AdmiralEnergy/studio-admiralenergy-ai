@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { collaborationSteps, partnershipModes } from "@/data/partnership";
 
 export const metadata: Metadata = {
-  title: "David & Leigh — The Studio Admiral Partnership",
+  title: "David & Leigh | The Studio Admiral Partnership",
   description: "Meet David and Leigh, two equal Studio Admiral partners combining strategy, conversion, storytelling, creative direction, content, and practical business experience.",
   alternates: { canonical: "/about" },
   openGraph: { title: "David & Leigh | Studio Admiral", description: "Independent expertise. Shared strategy when it matters.", url: "/about" },
@@ -18,7 +18,7 @@ export default function AboutPage() {
     <main id="main-content">
       <section className="page-hero">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>Partnership</span></nav>
-        <div className="page-hero-grid"><div><p className="eyebrow"><span /> David + Leigh</p><h1>Independent expertise. <em>Shared strategy.</em></h1></div><p className="page-hero-lede">Studio Admiral is a founder-led marketing partnership—not a large anonymous agency. David and Leigh lead independently when appropriate and collaborate when valuable.</p></div>
+        <div className="page-hero-grid"><div><p className="eyebrow"><span /> David + Leigh</p><h1>Independent expertise. <em>Shared strategy.</em></h1></div><p className="page-hero-lede">Studio Admiral is a founder-led marketing partnership, not a large anonymous agency. David and Leigh lead independently when appropriate and collaborate when valuable.</p></div>
       </section>
 
       <section className="section founder-gateway-section"><SectionHeading eyebrow="Meet the partners" title={<>Choose a perspective. <em>Keep the full range.</em></>} description="Neither founder is an assistant to the other. Each has a direct contact route, a distinct portfolio lead, and equal standing inside Studio Admiral." /><FounderGateway /></section>

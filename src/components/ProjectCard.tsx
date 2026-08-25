@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { projectLeadLabel, type Project } from "@/data/projects";
+import { projectLeadLabel, projectStatusLabel, type Project } from "@/data/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 export function ProjectCard({ project, priority = false }: { project: Project; priority?: boolean }) {
@@ -9,7 +9,7 @@ export function ProjectCard({ project, priority = false }: { project: Project; p
         <ProjectVisual project={project} priority={priority} />
       </Link>
       <div className="project-card-copy">
-        <div className="project-card-topline"><span>{projectLeadLabel(project.lead)}</span><span>{project.status}</span></div>
+        <div className="project-card-topline"><span>{projectLeadLabel(project.lead)}</span><span>{projectStatusLabel(project.status)}</span></div>
         <h3><Link href={`/work/${project.slug}`}>{project.name}</Link></h3>
         <p>{project.shortDescription}</p>
         <ul className="project-card-tags">{project.categories.map((category) => <li key={category}>{category}</li>)}</ul>
