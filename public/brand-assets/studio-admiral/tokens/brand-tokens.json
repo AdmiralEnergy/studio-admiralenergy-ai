@@ -1,0 +1,18 @@
+{
+  "color": {
+    "navy": "#0D1B2A",
+    "charcoal": "#252525",
+    "ivory": "#F7F3EF",
+    "gold": "#C6A15B",
+    "steel": "#B7BCC4",
+    "electric": "#3C82F6"
+  },
+  "semantic": {
+    "backgroundPrimary": "{color.ivory}",
+    "backgroundDark": "{color.navy}",
+    "textPrimary": "{color.charcoal}",
+    "textOnDark": "{color.ivory}",
+    "accentPrimary": "{color.gold}",
+    "focusRing": "{color.electric}"
+  }
+}

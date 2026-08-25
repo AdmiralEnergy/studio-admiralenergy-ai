@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Studio Admiral
 
-## Getting Started
+Studio Admiral is the public home of David and Leigh's founder-led marketing partnership. The site presents their portfolios, complementary services, a one-time Small Business Marketing Baseline, partner-routed inquiries, and a separately qualified free-website program.
 
-First, run the development server:
+## Local development
+
+Requirements: Node.js 22 and npm.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Validation:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuration
 
-## Learn More
+- Site-wide offer terms, brand paths, and navigation live in `src/data/site.ts`.
+- Founder profiles, partnership services, proof statements, collaboration steps, and Marketing Baseline tiers live in `src/data/partnership.ts`.
+- The typed, filterable portfolio model lives in `src/data/projects.ts`.
+- Optional analytics uses `NEXT_PUBLIC_GA_ID`; see `.env.example`.
+- Partner-routed email delivery uses `RESEND_API_KEY` and `CONTACT_FROM_EMAIL`.
+- Netlify project and build settings are defined in `netlify.toml`. The production project is `studioadmiral` / `studio.admiralenergy.ai`.
 
-To learn more about Next.js, take a look at the following resources:
+## Forms
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The free-website application remains the Netlify form `website-application`; `public/__forms.html` supplies its static definition. Paid projects, Marketing Baseline requests, jobs/contracts, collaborations, and general inquiries post to `/api/inquiry`, where partner recipients are selected server-side and sent through Resend.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Main is connected to the existing Studio Admiral Netlify project. Use a draft deploy for review before promoting a release to production.

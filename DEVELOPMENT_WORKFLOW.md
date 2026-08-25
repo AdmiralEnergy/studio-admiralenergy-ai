@@ -1,63 +1,23 @@
-# Development Workflow Templates
+# Development Workflow
 
-## 1) Feature / Change Template (VS Code LLM)
+## Stack
 
-**Role:** Lead engineer for a Next.js 15 + React 19 + Tailwind v4 repo.
+- Node.js 22
+- Next.js 15.5 with App Router
+- React 19
+- TypeScript strict mode
+- Tailwind CSS 4 plus project-level CSS
+- Netlify Next.js runtime and Netlify Forms
 
-**Goal:**
-- [Describe the feature/change clearly]
+## Change checklist
 
-**Constraints:**
-- Node 22, Next 15, no Turbopack unless required
-- Keep SSR/ISR working on Netlify Next runtime
-- No breaking ESLint/TS
+1. Keep configurable business terms in `src/data` rather than scattering commitments through components.
+2. Use real project evidence. Do not add testimonials, metrics, outcomes, or client relationships that have not been verified.
+3. Add page-specific metadata for new routes and project-specific social metadata for shareable detail routes.
+4. Update `public/__forms.html` when visible Netlify form fields or names change.
+5. Run `npm run typecheck`, `npm run lint`, and `npm run build` before deploying.
+6. Create a draft Netlify deploy for review. Promote to production only after the preview is approved.
 
-**Acceptance Criteria:**
-- Builds on Netlify main (Node 22) with zero TS/ESLint errors
-- /api/health returns updated COMMIT_REF
-- Add tests or lightweight runtime checks if applicable
+## Brand assets
 
-**Tasks:**
-1) Plan the change (list files to touch)
-2) Implement code
-3) Update/add env, routes, types as needed
-4) Create branch, commit atomic changes, open PR with summary, risks, rollback
-5) If needed, write a Post-Deploy checklist
-
-**Artifacts:**
-- PR link
-- Summary changelog
-- Any migration notes
-
----
-
-## 2) Bug Fix Template (VS Code LLM)
-
-**Bug:**
-- [Describe observed behavior + steps to reproduce]
-
-**Workflow:**
-- Reproduce locally using dev server
-- Identify root cause
-- Patch with minimal diff
-- Add a regression check (unit or simple runtime assert)
-- Push branch + PR with "Cause / Fix / Risk / Rollback" sections
-
-**PR Structure:**
-- **Cause:** What caused the issue
-- **Fix:** How it's resolved
-- **Risk:** Potential side effects
-- **Rollback:** How to revert if needed
-
----
-
-## Current Stack Reference
-
-- **Runtime:** Node 22
-- **Framework:** Next.js 15.5.4 with App Router
-- **React:** 19.1.0
-- **Styling:** Tailwind CSS 4.x
-- **TypeScript:** 5.x with strict mode
-- **Deployment:** Netlify with auto-deploy on main
-- **Health Check:** `/api/health` endpoint for monitoring
-- **Build Indicator:** BuildChip component in footer
+The header uses a text fallback until final logo assets are supplied. Configure replacements in `src/data/site.ts` and store them under `public/brand/`. The About page similarly falls back safely until a founder image is supplied under `public/images/about/`.

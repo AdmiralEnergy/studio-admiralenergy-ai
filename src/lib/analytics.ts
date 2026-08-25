@@ -1,16 +1,13 @@
-// src/lib/analytics.ts
-export const track = (event: string, params: Record<string, any> = {}) => {
-  if (typeof window === 'undefined') return;
-  (window as any).gtag?.('event', event, params);
-};
+type EventParams = Record<string, string | number | boolean | undefined>;
 
-export const trackRedditLead = () => {
-  if (typeof window === 'undefined') return;
-  (window as any).rdt?.('track', 'Lead');
-};
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (command: "event" | "config" | "js", nameOrId: string | Date, params?: EventParams) => void;
+  }
+}
 
-export const getUtmParams = () => {
-  if (typeof window === 'undefined') return {};
-  const params = new URLSearchParams(window.location.search);
-  return Object.fromEntries(params.entries());
-};
+export function track(event: string, params: EventParams = {}) {
+  if (typeof window === "undefined") return;
+  window.gtag?.("event", event, params);
+}

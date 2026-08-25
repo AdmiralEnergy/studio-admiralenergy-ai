@@ -1,61 +1,24 @@
-# Site Simplification Changes - October 2025
+# Studio Admiral Overhaul — August 2026
 
-## ✅ Completed Changes
+## Positioning
 
-### 🎯 Simplified Structure
-- **Hero Section**: Replaced long text blocks with clean copy and video placeholder
-- **Removed Sections**: Eliminated long case studies, redundant navigation, and complex explanations
-- **Streamlined Copy**: Focused on clear value proposition for AI avatar services
+- Repositioned Studio Admiral as a small-business website and growth studio.
+- Added a guarded no-upfront-design-fee website program for qualifying businesses.
+- Separated the website program from paid growth services.
+- Removed AI-avatar, Fiverr-package, placeholder-testimonial, and energy-only positioning.
 
-### 🎥 Video Integration Ready
-- **Hero Video**: Added `<video>` element ready for 10s loop (`/hero-demo.mp4`)
-- **Showcase Video**: Added 1080x1080 video placeholder (`/showcase-demo.mp4`)
-- Both videos have fallback content until actual videos are added
+## Website
 
-### 💰 Pricing & CTAs Optimized
-- **3 Pricing Tiers**: Basic ($50), Standard ($125), Premium ($250) - all working
-- **Fiverr Integration**: All "Order on Fiverr" buttons properly linked via environment variables
-- **Bottom CTA Band**: Added prominent call-to-action at page bottom
-- **Multiple CTAs**: Strategic placement throughout the page
+- Built a complete App Router site with Home, Websites, Work, case studies, Growth Services, About, Apply, Contact, Privacy, and Thank You routes.
+- Added centralized offer, service, and portfolio data.
+- Added real portfolio screenshots and verified live links for Kings Mountain Muay Thai, Admiral Energy, and Otagon.
+- Labeled project relationships transparently and kept Affirm Beauty&apos;s live link conditional because no public deployment was verified.
+- Added Netlify website-application and growth-inquiry forms with honeypot protection.
 
-### 👥 Testimonial System Ready
-- **Carousel Placeholder**: Created testimonial section ready for Fiverr reviews
-- **5-Star Rating Display**: Visual star rating system included
-- **Easy Updates**: Simple structure to add real testimonials when available
+## Production readiness
 
-### 🧹 Code Cleanup
-- Removed complex proposal modal system
-- Eliminated unused gallery and FAQ sections
-- Simplified component structure
-- Maintained all existing Fiverr URL environment variables
-
-## 🎯 Optional Next Steps
-
-### Interactive 3-Question Form
-To add the micro-form you mentioned:
-
-1. **Questions**: "Who's your avatar for?" → "What style fits best?" → "Show Sample"
-2. **Implementation**: Local state management with modal
-3. **No Backend Needed**: Pure frontend interaction
-4. **Integration**: Can be added as a separate component
-
-### Video Files Needed
-- `/public/hero-demo.mp4` - 10 second loop for hero section
-- `/public/showcase-demo.mp4` - 1080x1080 showcase video
-
-### Environment Variables
-Make sure these are set for Fiverr integration:
-```
-NEXT_PUBLIC_FIVERR_BASIC_URL=your_basic_fiverr_url
-NEXT_PUBLIC_FIVERR_STANDARD_URL=your_standard_fiverr_url  
-NEXT_PUBLIC_FIVERR_PREMIUM_URL=your_premium_fiverr_url
-```
-
-## 📊 Results
-- **Reduced complexity**: From 601 lines to 434 lines (28% reduction)
-- **Improved focus**: Clear path to Fiverr packages
-- **Video ready**: Placeholders for professional video content
-- **Mobile optimized**: Responsive design maintained
-- **SEO friendly**: Clean structure with proper headings
-
-Your live build should automatically redeploy via Netlify/Vercel after the git push.
+- Added page metadata, canonical URLs, Open Graph and X metadata, structured data, sitemap, and robots routes.
+- Added optional environment-driven analytics and meaningful event names.
+- Removed ignored TypeScript/build errors and restored explicit lint and typecheck scripts.
+- Added responsive layouts, keyboard focus states, semantic structure, reduced-motion support, and optimized Next.js image delivery.
+- Corrected the local Netlify linkage to the existing `studioadmiral` project.

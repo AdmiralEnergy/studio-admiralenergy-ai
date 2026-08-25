@@ -1,18 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export default function ThankYouPage() {
+export const metadata: Metadata = { title: "Thank You", description: "Your message has been received by Studio Admiral.", robots: { index: false, follow: false } };
+
+export default async function ThankYouPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+  const { type } = await searchParams;
+  const isWebsite = type === "website";
   return (
-    <main className="grid min-h-screen place-items-center bg-cream px-4">
-      <section className="w-full max-w-xl rounded-3xl bg-white p-8 text-center shadow-sm">
-        <p className="text-sm uppercase tracking-wide text-green">Affirm Beauty Artistry</p>
-        <h1 className="mt-2 font-serif text-3xl">Thank you for your inquiry</h1>
-        <p className="mt-3 text-black/75">
-          Your Student Portfolio Clip request was submitted successfully. Leigh will review your details and follow up soon.
-        </p>
-        <Link href="/" className="mt-6 inline-block rounded-full bg-green px-5 py-3 text-sm font-semibold text-white">
-          Back to Home
-        </Link>
-      </section>
-    </main>
+    <main id="main-content" className="thank-you-shell"><section className="thank-you-card"><p className="eyebrow" style={{ justifyContent: "center" }}><span /> Received</p><h1>{isWebsite ? "Your application is in." : "Thanks for reaching out."}</h1><p>{isWebsite ? "We will review the business, project scope, and current capacity. If it looks like a fit, Studio Admiral will follow up to discuss the next step." : "We will review the context and follow up with a practical next step."}</p><div className="hero-actions" style={{ justifyContent: "center" }}><Link className="button" href="/work">View our work <span aria-hidden="true">→</span></Link><Link className="text-link" href="/">Back home <span aria-hidden="true">→</span></Link></div></section></main>
   );
 }

@@ -1,26 +1,18 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><title>Forms Shim</title></head>
+<head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Studio Admiral form definitions</title></head>
 <body>
-  <form name="order" method="POST" data-netlify="true" enctype="multipart/form-data" netlify-honeypot="bot-field">
-    <input type="hidden" name="form-name" value="order" />
-    <p style="display:none">
-      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-    </p>
-    <input type="text" name="name" />
-    <input type="email" name="email" />
-    <input type="text" name="clinic" />
-    <textarea name="tagline"></textarea>
-    <input type="text" name="services" />
-    <input type="checkbox" name="share_ok" />
-    <input type="hidden" name="package" />
-    <input type="hidden" name="price" />
-    <input type="text" name="utm_source" />
-    <input type="text" name="utm_medium" />
-    <input type="text" name="utm_campaign" />
-    <input type="text" name="utm_content" />
-    <input type="file" name="logo" />
-    <button type="submit">Send</button>
+  <!-- Static definitions allow Netlify to register forms produced by the Next.js application. -->
+  <form name="website-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you?type=website">
+    <input type="hidden" name="form-name" value="website-application">
+    <input name="bot-field">
+    <input name="name"><input name="business_name"><input type="email" name="email"><input name="phone">
+    <input name="business_location"><input name="industry"><textarea name="business_description"></textarea>
+    <textarea name="offer"></textarea><input type="url" name="existing_website"><select name="has_website"><option>No</option></select>
+    <textarea name="not_working"></textarea><textarea name="website_needs"></textarea><select name="primary_goal"><option>Calls</option></select>
+    <select name="timeline"><option>No fixed date</option></select><input name="social_profiles"><input type="url" name="google_business_profile">
+    <select name="has_logo"><option>Yes</option></select><select name="has_photography"><option>Yes</option></select><textarea name="additional_notes"></textarea>
+    <button type="submit">Submit</button>
   </form>
 </body>
 </html>

@@ -1,0 +1,16 @@
+:root {
+  --brand-navy: #0D1B2A;
+  --brand-charcoal: #252525;
+  --brand-ivory: #F7F3EF;
+  --brand-gold: #C6A15B;
+  --brand-steel: #B7BCC4;
+  --brand-electric: #3C82F6;
+
+  --background-primary: var(--brand-ivory);
+  --background-dark: var(--brand-navy);
+  --text-primary: var(--brand-charcoal);
+  --text-on-dark: var(--brand-ivory);
+  --accent-primary: var(--brand-gold);
+  --border-subtle: color-mix(in srgb, var(--brand-steel) 55%, transparent);
+  --focus-ring: var(--brand-electric);
+}
